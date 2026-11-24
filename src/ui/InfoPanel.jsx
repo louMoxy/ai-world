@@ -4,6 +4,7 @@ import { getStation } from '../stations/stations'
 import { getAgent } from '../agents/agents'
 import { getShip } from '../ships/ships'
 import { getBrain } from '../brains'
+import { IslandLog } from './IslandLog'
 
 export function InfoPanel() {
   const selected = useWorld((s) => s.selected)
@@ -23,6 +24,7 @@ export function InfoPanel() {
         ×
       </button>
       {selected.type === 'station' && <StationInfo id={selected.id} />}
+      {selected.type === 'log' && <IslandLog openId={selected.id} />}
       {selected.type === 'agent' && <Chat entity={getAgent(selected.id)} />}
       {selected.type === 'ship' && (
         <Chat entity={getShip(selected.id)} hint='Try "sail north", "go to the dock" or "stop".' />

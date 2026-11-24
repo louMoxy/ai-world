@@ -22,6 +22,8 @@ import { LoadingScreen } from './ui/LoadingScreen'
 import { LookSwitcher } from './ui/LookSwitcher'
 import { MaterialSwap } from './looks/MaterialSwap'
 import { LookEffects } from './looks/LookEffects'
+import { MakingWorld } from './making/MakingWorld'
+import { ChallengeCard } from './ui/ChallengeCard'
 
 /** Tells the loading screen to fade once a couple of frames have been drawn. */
 function ReadySignal() {
@@ -52,6 +54,7 @@ function World() {
       {SHIPS.map((s) => (
         <Ship key={s.id} ship={s} />
       ))}
+      <MakingWorld />
       <CameraRig />
       <ReadySignal />
       <MaterialSwap />
@@ -76,6 +79,7 @@ export default function App() {
         </Suspense>
       </Canvas>
       <Overlay />
+      <ChallengeCard />
       <InfoPanel />
       <LookSwitcher />
       <LoadingScreen />

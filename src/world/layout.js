@@ -2,6 +2,7 @@ import { heightAt } from './terrain'
 import { mulberry32 } from './noise'
 import { STATIONS } from '../stations/stations'
 import { toDock, PIER } from './dock'
+import { WORKSTATIONS, GALLERY_SLOTS } from '../making/workstations'
 
 /** Place things randomly (but the same every load) on suitable ground. */
 function scatter({ count, seed, minHeight, maxHeight, keepOut, spacing, accept }) {
@@ -17,6 +18,8 @@ function scatter({ count, seed, minHeight, maxHeight, keepOut, spacing, accept }
     const y = heightAt(x, z)
     if (y < minHeight || y > maxHeight) continue
     if (STATIONS.some((s) => Math.hypot(s.position[0] - x, s.position[1] - z) < keepOut)) continue
+    if (WORKSTATIONS.some((w) => Math.hypot(w.stand.x - x, w.stand.z - z) < 3)) continue
+    if (GALLERY_SLOTS.some((g) => Math.hypot(g.x - x, g.z - z) < 2.2)) continue // room for the displays
     if (out.some((o) => Math.hypot(o.x - x, o.z - z) < spacing)) continue
     const d = toDock(x, z)
     if (d.a > -8 && d.a < PIER.end + 3 && Math.abs(d.b) < 5) continue // keep the pier clear
@@ -51,4 +54,6 @@ export const OBSTACLES = [
   ...STATIONS.map((s) => ({ x: s.position[0], z: s.position[1], r: 2.8 })),
   ...TREES.map((t) => ({ x: t.x, z: t.z, r: 0.5 * t.scale })),
   ...ROCKS.map((r) => ({ x: r.x, z: r.z, r: 0.5 * r.scale })),
+  ...WORKSTATIONS.map((w) => ({ x: w.x, z: w.z, r: w.r })),
+  ...GALLERY_SLOTS.map((g) => ({ x: g.x, z: g.z, r: g.r })),
 ]

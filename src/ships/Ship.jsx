@@ -60,14 +60,14 @@ export function Ship({ ship }) {
       if (index >= 0) {
         s.route = planRoute(s, { waypointIndex: index })
         s.atDock = false
-        setStatus(ship.id, `Sailing ${WAYPOINTS[index].name.toLowerCase()}`)
+        setStatus(ship.id, action.status ?? `Sailing ${WAYPOINTS[index].name.toLowerCase()}`)
         return { ...action, elapsed: 0 }
       }
     }
     if (action?.type === 'dock') {
       s.route = planRoute(s, { berth: s.berth })
       const moored = s.atDock
-      setStatus(ship.id, moored ? 'Moored at the harbour' : 'Heading back to the harbour')
+      setStatus(ship.id, moored ? action.arrivedStatus ?? 'Moored at the harbour' : action.status ?? 'Heading back to the harbour')
       return { ...action, seconds: action.seconds ?? 8, moored, elapsed: 0 }
     }
     if (action?.type === 'say') {
@@ -75,7 +75,7 @@ export function Ship({ ship }) {
       return { ...action, elapsed: 0 }
     }
     s.route = []
-    setStatus(ship.id, s.atDock ? 'Moored at the harbour' : 'Holding position')
+    setStatus(ship.id, action?.status ?? (s.atDock ? 'Moored at the harbour' : 'Holding position'))
     return { type: 'idle', seconds: action?.seconds ?? 3, elapsed: 0 }
   }
 
@@ -162,7 +162,7 @@ export function Ship({ ship }) {
           s.atDock = true
           s.currentWaypointId = null
           a.elapsed = 0
-          useWorld.getState().setStatus(ship.id, 'Moored at the harbour')
+          useWorld.getState().setStatus(ship.id, a.arrivedStatus ?? 'Moored at the harbour')
         }
         if (a.elapsed >= a.seconds) finish()
       } else if (a.elapsed >= (a.seconds ?? 2)) {

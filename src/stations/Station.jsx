@@ -189,6 +189,32 @@ function Dock({ color, y }) {
   )
 }
 
+/** An open rotunda: columns and a ring roof, with the crystal floating inside. */
+BUILDINGS.gallery = {
+  top: 1.7,
+  render: (color) => (
+    <>
+      {Array.from({ length: 6 }, (_, i) => {
+        const a = (i / 6) * Math.PI * 2
+        return (
+          <mesh key={i} position={[Math.cos(a) * 1.75, 1.25, Math.sin(a) * 1.75]} castShadow>
+            <cylinderGeometry args={[0.16, 0.2, 2.5, 6]} />
+            <meshStandardMaterial color={WALL} flatShading />
+          </mesh>
+        )
+      })}
+      <mesh position-y={2.6} rotation-x={Math.PI / 2} castShadow>
+        <torusGeometry args={[1.8, 0.22, 5, 6]} />
+        <meshStandardMaterial color={color} flatShading />
+      </mesh>
+      <mesh position-y={0.08} receiveShadow>
+        <cylinderGeometry args={[1.3, 1.3, 0.16, 6]} />
+        <meshStandardMaterial color={WALL} flatShading />
+      </mesh>
+    </>
+  ),
+}
+
 BUILDINGS.dock = {
   top: 3.6,
   noBase: true,

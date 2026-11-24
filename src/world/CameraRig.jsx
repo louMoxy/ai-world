@@ -29,7 +29,10 @@ export function CameraRig() {
 
   return (
     <OrbitControls
-      ref={controls}
+      ref={(c) => {
+        controls.current = c
+        if (import.meta.env.DEV) window.__controls = c // for looking around from the console
+      }}
       makeDefault
       target={[0, 1.5, 0]}
       enableDamping

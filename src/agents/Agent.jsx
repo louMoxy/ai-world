@@ -7,6 +7,9 @@ import { OBSTACLES } from '../world/layout'
 import { STATIONS, getStation } from '../stations/stations'
 import { useWorld, isThing } from '../store'
 import { getBrain } from '../brains'
+import { getWorkstation } from '../making/workstations'
+import { useMaking, wornOutfit } from '../making/store'
+import { Outfit } from '../making/Outfit'
 
 const SPEED = 2.2
 const STAND_RADIUS = 3.6 // how far from a station's centre a character stops
@@ -35,6 +38,7 @@ export function Agent({ agent }) {
   const selected = useWorld((s) => isThing(s.selected, 'agent', agent.id))
   const speech = useWorld((s) => s.speech[agent.id])
   const active = hovered || selected
+  const outfit = useMaking((s) => wornOutfit(s, agent.id))
 
   // Turn a brain's Action into something the character can carry out.
   const startAction = (action) => {
@@ -44,8 +48,14 @@ export function Agent({ agent }) {
     if (action?.type !== 'say') setStatus(agent.id, here ? `Hanging out at ${here.name}` : 'Looking around')
     if (action?.type === 'walkTo') {
       const station = getStation(action.stationId)
+      const spot = getWorkstation(action.stationId)
+      if (spot) {
+        // Workstations have an exact place to stand.
+        setStatus(agent.id, action.status ?? `Walking to the ${spot.name.toLowerCase()}`)
+        return { ...action, tx: spot.stand.x, tz: spot.stand.z, elapsed: 0 }
+      }
       if (station) {
-        setStatus(agent.id, `Walking to ${station.name}`)
+        setStatus(agent.id, action.status ?? `Walking to ${station.name}`)
         const [sx, sz] = station.position
         // Stop on the side we're approaching from, with a little variation.
         const angle = Math.atan2(s.z - sz, s.x - sx) + (Math.random() - 0.5) * 1.6
@@ -56,7 +66,18 @@ export function Agent({ agent }) {
       useWorld.getState().say(agent.id, action.text, action.seconds ?? 3.5)
       return { ...action, elapsed: 0 }
     }
-    if (action?.type === 'idle') return { ...action, elapsed: 0 }
+    if (action?.type === 'idle') {
+      if (action.status) setStatus(agent.id, action.status)
+      return { ...action, elapsed: 0 }
+    }
+    if (action?.type === 'work') {
+      // Busy at a workstation or station: face it and get on with the job.
+      setStatus(agent.id, action.status ?? 'Working')
+      const spot = getWorkstation(s.currentStationId)
+      const station = getStation(s.currentStationId)
+      const [fx, fz] = spot ? [spot.x, spot.z] : station ? station.position : [s.x, s.z + 1]
+      return { ...action, seconds: action.seconds ?? 8, face: Math.atan2(fx - s.x, fz - s.z), elapsed: 0 }
+    }
     return { type: 'idle', seconds: 2, elapsed: 0 } // unknown action: just wait
   }
 
@@ -72,6 +93,7 @@ export function Agent({ agent }) {
     const t = state.clock.elapsedTime
     const paused = isThing(useWorld.getState().selected, 'agent', agent.id)
     let moving = false
+    let working = false
     let desiredHeading = s.heading
 
     if (paused) {
@@ -147,8 +169,12 @@ export function Agent({ agent }) {
             desiredHeading = Math.atan2(vx, vz)
             moving = true
           }
-        } else if (a.elapsed >= (a.seconds ?? 2)) {
-          finish()
+        } else {
+          if (a.type === 'work') {
+            desiredHeading = a.face
+            working = true
+          }
+          if (a.elapsed >= (a.seconds ?? 2)) finish()
         }
       }
     }
@@ -170,7 +196,8 @@ export function Agent({ agent }) {
     group.current.position.set(s.x, heightAt(s.x, s.z) + bob, s.z)
     group.current.rotation.y = s.heading
     body.current.scale.y = 1 + Math.sin(t * 2.2) * 0.03
-    body.current.rotation.z = moving ? Math.sin(t * 10) * 0.06 : 0
+    body.current.rotation.z = moving ? Math.sin(t * 10) * 0.06 : working ? Math.sin(t * 6) * 0.05 : 0
+    body.current.rotation.x = working ? 0.12 + Math.sin(t * 3) * 0.04 : 0 // lean in to work
   })
 
   return (
@@ -215,6 +242,8 @@ export function Agent({ agent }) {
           <icosahedronGeometry args={[0.09, 0]} />
           <meshStandardMaterial color={agent.color} emissive={agent.color} emissiveIntensity={active ? 2 : 0.8} />
         </mesh>
+        {/* The newest outfit the island has made for this character. */}
+        {outfit && <Outfit outfit={outfit} />}
       </group>
 
       <mesh rotation-x={-Math.PI / 2} position-y={0.05} visible={active}>

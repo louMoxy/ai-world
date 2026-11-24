@@ -46,6 +46,14 @@ export const STATIONS = [
     description: 'A calm spot by the shore. Maybe a model for ideas, stories or conversation.',
   },
   {
+    id: 'gallery',
+    name: 'Gallery',
+    kind: 'gallery',
+    color: '#f72585',
+    position: [4, 16],
+    description: 'Everything the island has made is shown here, newest first. Click a piece to open its page in the Island Log.',
+  },
+  {
     id: 'harbour',
     name: 'Harbour',
     kind: 'dock',

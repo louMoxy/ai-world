@@ -21,6 +21,9 @@ export function createScriptedShipBrain(ship, waypoints) {
   const brain = {
     interrupt: false,
 
+    /** True while an order from chat is waiting to be carried out. */
+    hasOrder: () => order !== null,
+
     decide({ currentWaypointId, atDock, lastAction }) {
       if (order) {
         const o = order

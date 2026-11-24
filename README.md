@@ -43,7 +43,17 @@ src/
     LookEffects.jsx     Full-screen filters; all built at load so switching is instant
     effects.js          Custom filters: ink outlines, posterize, blueprint, AI vision
     MaterialSwap.jsx    Swaps every surface to cartoon shading for the Toon look
-  ui/                   Overlay, info and chat panel, look switcher, loading screen
+  making/
+    designs.js          Design formats (print, fabric, outfit) and the limits every design is checked against
+    samples.js          Hand-written days, used until the AI writes them
+    store.js            The day: progress, finishing, the report and the log
+    storage.js          Where days are saved (this browser for now; the server in stage 2)
+    makerBrain.js       Makes the characters and ships work on the day's jobs
+    sketch.js           Draws each day's sketch, stroke by stroke
+    fabric.js           Paints fabric patterns (sketches and 3D cloth)
+    workstations.js     Where the easel, printer, mannequin, loom and gallery displays are
+    MakingWorld.jsx     The easel, 3D printer, mannequin, loom and Gallery in the world
+  ui/                   Overlay, info and chat panel, look switcher, challenge card, Island Log, loading screen
 ```
 
 ## Looks
@@ -55,6 +65,23 @@ A look changes how the whole world is drawn. There are six: Default, Toon, Night
 - **effects**: full-screen filters (`outline`, `bloom`, `pixel`, `blueprint`, `vision`, `glow`). New filters go in `LookEffects.jsx`.
 
 Every look is compiled behind the loading screen, so switching never pauses. The labels and speech bubbles are HTML, so each look restyles them in `styles.css` (`body[data-look=...]`).
+
+## Making things
+
+Every day the island takes on one making challenge: a **3D print**, a **fabric** or an **outfit**.
+
+1. One character draws the design at the **easel** next to the Library. The sketch appears stroke by stroke.
+2. Another builds it: the **3D printer** by the Workshop prints it layer by layer, the **loom** by Garden Gate weaves it, or the **mannequin** shows the outfit being sewn.
+3. The third character helps at a station, and the ships fetch materials and bring them to the harbour.
+4. When it's finished it goes to the **Gallery**. Fabrics hang as banners, prints stand on plinths, and outfits are worn by the character they were made for.
+
+Later days build on earlier ones: an outfit uses the newest fabric, and a print can improve an earlier one.
+
+The **Island Log** (on the challenge card, or click any workstation or Gallery piece) keeps every day: its sketch (click to download it as a PNG), the design, who did what, and the end-of-day report.
+
+A new day starts the first time you open the world on a new date. In the dev server, the challenge card has **+25%** and **Next day** buttons for testing.
+
+Designs are plain data, never code. `validateDesign` in `src/making/designs.js` checks every one against strict limits (parts, sizes, colours, the print area), so an AI-written design can never break the world. For now the days come from `samples.js` and are saved in this browser. Stage 2 adds a server to save them, and stage 3 has an AI write the daily challenge and report.
 
 ## Adding AI later
 
