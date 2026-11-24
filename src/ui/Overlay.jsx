@@ -9,7 +9,7 @@ export function Overlay() {
         <span><kbd>Drag</kbd> rotate</span>
         <span><kbd>Scroll</kbd> zoom</span>
         <span><kbd>Right-drag</kbd> pan</span>
-        <span><kbd>Click</kbd> a station or character</span>
+        <span><kbd>Click</kbd> someone to follow them</span>
       </footer>
     </>
   )

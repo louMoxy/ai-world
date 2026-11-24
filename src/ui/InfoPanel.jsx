@@ -1,10 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect } from 'react'
 import { useWorld } from '../store'
 import { getStation } from '../stations/stations'
-import { getAgent } from '../agents/agents'
-import { getShip } from '../ships/ships'
-import { getBrain } from '../brains'
+import { AGENTS, getAgent } from '../agents/agents'
+import { SHIPS, getShip } from '../ships/ships'
+import { WAYPOINT_INFO } from '../ships/navigation'
+import { getWorkstation } from '../making/workstations'
+import { useMaking, jobNow, wornOutfit, allDays, progressOf } from '../making/store'
 import { IslandLog } from './IslandLog'
+
+/** Everyone you can follow, in order. */
+const CAST = [...AGENTS.map((a) => ({ type: 'agent', id: a.id })), ...SHIPS.map((s) => ({ type: 'ship', id: s.id }))]
 
 export function InfoPanel() {
   const selected = useWorld((s) => s.selected)
@@ -17,18 +22,16 @@ export function InfoPanel() {
   }, [clearSelection])
 
   if (!selected) return null
+  const following = selected.type === 'agent' || selected.type === 'ship'
 
   return (
-    <aside className="panel" key={`${selected.type}-${selected.id}`}>
-      <button className="close" onClick={clearSelection} aria-label="Close">
+    <aside className={`panel ${following ? 'follow' : ''}`} key={following ? 'follow' : `${selected.type}-${selected.id}`}>
+      <button className="close" onClick={clearSelection} aria-label={following ? 'Stop following' : 'Close'}>
         ×
       </button>
       {selected.type === 'station' && <StationInfo id={selected.id} />}
       {selected.type === 'log' && <IslandLog openId={selected.id} />}
-      {selected.type === 'agent' && <Chat entity={getAgent(selected.id)} />}
-      {selected.type === 'ship' && (
-        <Chat entity={getShip(selected.id)} hint='Try "sail north", "go to the dock" or "stop".' />
-      )}
+      {following && <FollowPanel type={selected.type} id={selected.id} />}
     </aside>
   )
 }
@@ -55,84 +58,74 @@ function StationInfo({ id }) {
   )
 }
 
-/** Chat with a character or a ship. Messages go to its brain's respond(). */
-function Chat({ entity: agent, hint }) {
-  const id = agent.id
-  const brain = getBrain(id)
-  const messages = useWorld((s) => s.chats[id]) ?? []
+/** Where a job happens, in words. */
+function placeName(at) {
+  return getWorkstation(at)?.name ?? getStation(at)?.name ?? WAYPOINT_INFO.find((w) => w.id === at)?.name ?? at
+}
+
+/** The camera follows this character or ship; the card says what they're up to. */
+function FollowPanel({ type, id }) {
+  const entity = type === 'agent' ? getAgent(id) : getShip(id)
   const status = useWorld((s) => s.status[id])
-  const addMessage = useWorld((s) => s.addMessage)
-  const say = useWorld((s) => s.say)
-  const [text, setText] = useState('')
-  const [thinking, setThinking] = useState(false)
-  const listRef = useRef()
-  const inputRef = useRef()
+  const day = useMaking((s) => s.day)
+  const outfit = useMaking((s) => (type === 'agent' ? wornOutfit(s, id) : null))
+  const helpedMake = useMaking((s) => allDays(s).filter((d) => d.status === 'finished' && d.credits[id]).length)
+  if (!entity) return null
 
-  useEffect(() => {
-    if (!useWorld.getState().chats[id]?.length) {
-      addMessage(id, { from: 'agent', text: agent.greeting })
-      say(id, agent.greeting, 4)
-    }
-    inputRef.current?.focus()
-  }, [id, agent, addMessage, say])
-
-  useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages.length, thinking])
-
-  const send = async (e) => {
-    e.preventDefault()
-    const message = text.trim()
-    if (!message || thinking) return
-    setText('')
-    addMessage(id, { from: 'user', text: message })
-    setThinking(true)
-    try {
-      const history = useWorld.getState().chats[id] ?? []
-      const reply = await brain.respond(message, { self: { id, name: agent.name, role: agent.role }, history })
-      addMessage(id, { from: 'agent', text: reply })
-      say(id, reply, 5)
-    } catch {
-      addMessage(id, { from: 'agent', text: "Sorry, I couldn't think of a reply." })
-    } finally {
-      setThinking(false)
-    }
-  }
+  const job = jobNow(id)
+  const turns = day?.credits[id] ?? 0
+  const index = CAST.findIndex((c) => c.id === id)
+  const next = CAST[(index + 1) % CAST.length]
+  const follow = (c) => useWorld.getState().select(c)
 
   return (
-    <div className="panel-body chat">
+    <div className="panel-body">
       <div className="panel-head">
-        <span className="dot" style={{ background: agent.color }} />
+        <span className="dot" style={{ background: entity.color }} />
         <div>
-          <h2>{agent.name}</h2>
-          <p className="muted">{agent.role} · placeholder brain</p>
+          <h2>{entity.name}</h2>
+          <p className="muted">{entity.role}</p>
         </div>
       </div>
-      {status && (
-        <div className="status-line">
-          <span className="status on" /> {status}
+
+      <div className="status-line">
+        <span className="status on" /> {status ?? 'Looking around'}
+      </div>
+
+      {day && (
+        <div className="follow-today">
+          <h4>Today · {day.title}</h4>
+          {job ? (
+            <p>
+              <strong>{job.activity}</strong>
+              <span className="muted">
+                {' '}
+                {type === 'ship' ? `from the ${placeName(job.at).toLowerCase()}` : `at the ${placeName(job.at)}`} · {turns} {type === 'ship' ? (turns === 1 ? 'delivery' : 'deliveries') : turns === 1 ? 'turn' : 'turns'} so far
+              </span>
+            </p>
+          ) : (
+            <p className="muted">
+              {day.status === 'finished' ? 'The challenge is finished, so they’re off duty.' : 'No job today.'}
+            </p>
+          )}
+          <div className="progress thin">
+            <div style={{ width: `${Math.round(progressOf(day) * 100)}%` }} />
+          </div>
         </div>
       )}
-      {hint && <p className="muted">{hint}</p>}
-      <div className="messages" ref={listRef}>
-        {messages.map((m, i) => (
-          <div key={i} className={`msg ${m.from}`} style={m.from === 'agent' ? { '--accent': agent.color } : undefined}>
-            {m.text}
-          </div>
-        ))}
-        {thinking && <div className="msg agent thinking">…</div>}
-      </div>
-      <form className="composer" onSubmit={send}>
-        <input
-          ref={inputRef}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder={`Say something to ${agent.name}…`}
-        />
-        <button type="submit" disabled={!text.trim() || thinking}>
-          Send
+
+      <p className="muted small">
+        {outfit && <>Wearing {outfit.name}. </>}
+        Has helped make {helpedMake} {helpedMake === 1 ? 'creation' : 'creations'}.
+      </p>
+
+      <div className="follow-actions">
+        <button onClick={() => follow(next)}>Follow {(getAgent(next.id) ?? getShip(next.id)).name} ›</button>
+        <button className="secondary" onClick={() => useWorld.getState().clearSelection()}>
+          Stop following
         </button>
-      </form>
+      </div>
+      <p className="muted small">Drag to look around them, scroll to zoom. Esc stops following.</p>
     </div>
   )
 }

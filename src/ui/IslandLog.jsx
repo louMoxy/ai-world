@@ -3,6 +3,11 @@ import { useWorld } from '../store'
 import { useMaking, allDays, sketchProgress, progressOf, nameOf } from '../making/store'
 import { THEMES } from '../making/designs'
 import { sketchStrokes, sketchImage } from '../making/sketch'
+import { AGENTS } from '../agents/agents'
+import { SHIPS } from '../ships/ships'
+import { follow } from './ChallengeCard'
+
+const isCast = (id) => AGENTS.some((a) => a.id === id) || SHIPS.some((s) => s.id === id)
 
 const STATUS = { active: 'In progress', finished: 'Finished', unfinished: 'Unfinished' }
 
@@ -107,7 +112,14 @@ function LogEntry({ day, onOpen }) {
           <ul className="team">
             {team.map(([who, n]) => (
               <li key={who}>
-                {nameOf(who)} <span className="muted">· {n} {n === 1 ? 'turn' : 'turns'}</span>
+                {isCast(who) ? (
+                  <button className="link" onClick={() => follow(who)} title={`Follow ${nameOf(who)}`}>
+                    {nameOf(who)}
+                  </button>
+                ) : (
+                  nameOf(who)
+                )}{' '}
+                <span className="muted">· {n} {n === 1 ? 'turn' : 'turns'}</span>
               </li>
             ))}
           </ul>

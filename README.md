@@ -1,6 +1,6 @@
 # AI World
 
-A low-poly 3D island in the browser, built with React Three Fiber. Characters walk between stations. Each station and each character is a slot where an AI model will plug in later.
+A low-poly 3D island in the browser, built with React Three Fiber. Two characters, Nova and Pip, and a ship, the Gull, work together on a making challenge each day. Each station and each character is a slot where an AI model will plug in later.
 
 ## Run it
 
@@ -11,14 +11,14 @@ npm run dev
 
 Then open http://localhost:5173.
 
-**Controls:** drag to rotate, scroll to zoom, right-drag to pan. Click a station or a character to open its panel. Press Esc to close the panel. Press 1–6 (or use the list in the corner) to change the look.
+**Controls:** drag to rotate, scroll to zoom, right-drag to pan. Click a character or ship (or their name on the challenge card or in the Island Log) to zoom in and follow them; the panel shows what they are doing. Click a station to read about it. Press Esc to stop following or close a panel. Press 1–6 (or use the list in the corner) to change the look.
 
 ## Project layout
 
 ```
 src/
   App.jsx               Canvas and scene setup
-  store.js              Shared state: hover, selection, chats, speech bubbles
+  store.js              Shared state: hover, selection (who is followed), speech bubbles, status
   world/                Island terrain, water, sky, trees, rocks, clouds, camera
     terrain.js          heightAt(x, z), used by everything that stands on the ground
     layout.js           Where trees and rocks go; obstacles for characters
@@ -34,8 +34,8 @@ src/
     navigation.js       Sea waypoints, berths and route planning
     Ship.jsx            Sailing, mooring, bobbing on the waves, and the boat models
   brains/
-    scriptedBrain.js    Placeholder character brain, and the description of the brain interface
-    shipBrain.js        Placeholder ship brain: understands "sail north", "go to the dock", "stop"
+    scriptedBrain.js    Placeholder character brain for off-duty time, and the brain interface
+    shipBrain.js        Placeholder ship brain for when the Gull is off duty
     aiBrain.js          Example of where a real AI model plugs in (not used yet)
     index.js            Picks which brain each character and ship uses
   looks/
@@ -53,7 +53,7 @@ src/
     fabric.js           Paints fabric patterns (sketches and 3D cloth)
     workstations.js     Where the easel, printer, mannequin, loom and gallery displays are
     MakingWorld.jsx     The easel, 3D printer, mannequin, loom and Gallery in the world
-  ui/                   Overlay, info and chat panel, look switcher, challenge card, Island Log, loading screen
+  ui/                   Overlay, follow and station panel, look switcher, challenge card, Island Log, loading screen
 ```
 
 ## Looks
@@ -85,12 +85,12 @@ Designs are plain data, never code. `validateDesign` in `src/making/designs.js` 
 
 ## Adding AI later
 
-Each character's and ship's behaviour comes from a **brain** with two methods:
+Each character's and ship's behaviour comes from a **brain** with one method, `decide(context)`, which returns the next action. Characters can `walkTo` a station or workstation, `work`, `idle`, or `say` something. Ships can `sailTo` a waypoint, `dock` at the harbour, `idle`, or `say` something. Any action can carry a `status`, which is what the follow panel and challenge card show.
 
-- `decide(context)` returns the next action. Characters can `walkTo` a station, `idle`, or `say` something. Ships can `sailTo` a waypoint, `dock` at the harbour, `idle`, or `say` something.
-- `respond(message, context)` returns a chat reply.
-- A brain can set `interrupt = true` to drop the current action and decide again. That's how chat orders like "sail north" take effect straight away.
+`src/making/makerBrain.js` wraps each brain so it works on the day's challenge. When a character has no job, its own brain decides.
+
+There is no chat: the plan is one AI call a day to write the challenge and one to write the report, which keeps the cost very low.
 
 Ships sail between 8 compass waypoints around the island (North, North-East, …), and each ship has its own berth at the pier.
 
-To connect a model, make a small server endpoint that calls the model, keeping the API key on the server. Then switch that character to `createAIBrain` in `src/brains/index.js`. Never put API keys in browser code.
+To connect a model, make a small server endpoint that calls the model, keeping the API key on the server. For live AI decisions (more expensive), switch a character to `createAIBrain` in `src/brains/index.js`. Never put API keys in browser code.

@@ -236,62 +236,6 @@ kbd {
   padding: 8px 12px;
 }
 
-/* ---------- Chat ---------- */
-.messages {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 4px 2px;
-}
-.msg {
-  max-width: 85%;
-  padding: 9px 12px;
-  border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.4;
-}
-.msg.agent {
-  align-self: flex-start;
-  background: #fff;
-  border-left: 3px solid var(--accent);
-}
-.msg.user {
-  align-self: flex-end;
-  background: var(--ink);
-  color: #fff;
-}
-.msg.thinking { color: var(--muted); letter-spacing: 2px; }
-
-.composer {
-  display: flex;
-  gap: 8px;
-}
-.composer input {
-  flex: 1;
-  border: 1px solid #d5dce4;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font: inherit;
-  font-size: 14px;
-  background: #fff;
-  outline: none;
-}
-.composer input:focus { border-color: #7aa7d8; box-shadow: 0 0 0 3px rgba(122, 167, 216, 0.25); }
-.composer button {
-  border: none;
-  border-radius: 10px;
-  padding: 0 16px;
-  font: inherit;
-  font-weight: 600;
-  background: var(--ink);
-  color: #fff;
-  cursor: pointer;
-}
-.composer button:disabled { opacity: 0.4; cursor: default; }
-
 /* ---------- Loading ---------- */
 .loading {
   position: fixed;
@@ -456,7 +400,26 @@ body[data-look='vision'] .bubble::after { border-top-color: #7ff3ff; }
 .progress-label { display: flex; justify-content: space-between; margin-top: 4px; color: var(--muted); font-weight: 600; }
 .brief { margin: 10px 0; line-height: 1.45; }
 .crew { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
-.crew li { display: grid; grid-template-columns: 10px 58px 1fr; align-items: center; gap: 6px; }
+.crew button {
+  display: grid;
+  grid-template-columns: 10px 44px 1fr 16px;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 4px 6px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  cursor: pointer;
+}
+.crew button:hover { background: rgba(255, 255, 255, 0.7); }
+.crew button.on { background: #fff; border-color: #d5dce4; }
+.follow-icon { opacity: 0; font-size: 12px; transition: opacity 0.15s; }
+.crew button:hover .follow-icon,
+.crew button.on .follow-icon { opacity: 1; }
 .crew .muted { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .dot.small { width: 9px; height: 9px; box-shadow: none; }
 .challenge-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
@@ -522,3 +485,23 @@ button.link {
 .badge { font-size: 11px; font-weight: 700; color: var(--muted); }
 .badge.finished { color: #2a9d8f; }
 .badge.active { color: #f77f00; }
+
+/* ---------- Following someone ---------- */
+.panel.follow { bottom: auto; width: 320px; }
+.panel.follow .panel-body { gap: 10px; }
+.follow-today h4 { margin: 0 0 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.follow-today p { margin: 0 0 8px; }
+.progress.thin { height: 5px; }
+.follow-actions { display: flex; gap: 8px; }
+.follow-actions button {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+  font-weight: 600;
+  background: var(--ink);
+  color: #fff;
+  cursor: pointer;
+}
+.follow-actions button.secondary { background: #e9ecef; color: var(--ink); }

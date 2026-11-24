@@ -30,7 +30,7 @@ export const SHAPES = ['box', 'cylinder', 'cone', 'sphere', 'torus']
 export const PATTERNS = ['stripes', 'checks', 'spots', 'zigzag', 'weave', 'waves']
 export const HATS = ['none', 'beanie', 'top', 'cone', 'beret', 'crown', 'bucket']
 export const NECKS = ['none', 'scarf', 'cape', 'collar']
-export const WEARERS = ['nova', 'pip', 'sage']
+export const WEARERS = ['nova', 'pip']
 
 const HEX = /^#[0-9a-f]{6}$/i
 const num = (v, min, max) => typeof v === 'number' && Number.isFinite(v) && v >= min && v <= max

@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { SAMPLE_DAYS } from './samples'
 import { validateDesign, THEMES } from './designs'
 import { loadMaking, saveMaking } from './storage'
-import { AGENTS } from '../agents/agents'
+import { AGENTS, RETIRED_NAMES } from '../agents/agents'
 import { SHIPS } from '../ships/ships'
 
 /**
@@ -16,11 +16,12 @@ import { SHIPS } from '../ships/ships'
  * from SAMPLE_DAYS; stage 3 will ask the AI for them instead.
  */
 
-export const NEEDED = 48
+export const NEEDED = 30
 export const SKETCH_SHARE = 0.3
 const FALLBACK_FABRIC = { kind: 'fabric', name: 'Plain Canvas', pattern: 'weave', colors: ['#e9dcc3', '#d6c4a5', '#f4ecdc'], scale: 4 }
 
-export const nameOf = (id) => AGENTS.find((a) => a.id === id)?.name ?? SHIPS.find((s) => s.id === id)?.name ?? id
+export const nameOf = (id) =>
+  AGENTS.find((a) => a.id === id)?.name ?? SHIPS.find((s) => s.id === id)?.name ?? RETIRED_NAMES[id] ?? id
 
 /** Today's date as YYYY-MM-DD in local time. */
 export function dateKey(date = new Date()) {
@@ -167,6 +168,26 @@ export function getJob(id) {
 export const progressOf = (day) => (day ? day.done / day.needed : 0)
 export const sketchProgress = (day) => Math.min(1, progressOf(day) / SKETCH_SHARE)
 export const makeProgress = (day) => Math.max(0, Math.min(1, (progressOf(day) - SKETCH_SHARE) / (1 - SKETCH_SHARE)))
+
+/**
+ * What someone is doing for today's challenge right now. While the sketch is being drawn,
+ * builders show their prep step; once it's done, the sketcher goes to help the builder.
+ */
+export function jobNow(id) {
+  const job = getJob(id)
+  if (!job) return null
+  const day = useMaking.getState().day
+  const sketched = sketchProgress(day) >= 1
+  if (job.job === 'sketch' && sketched) {
+    const maker = day.tasks.find((t) => t.job === 'make')
+    if (maker) {
+      const making = THEMES[day.design.kind].making.toLowerCase()
+      return { ...job, job: 'help', at: maker.at, activity: `Helping ${nameOf(maker.who)} with the ${making}`, lines: maker.lines }
+    }
+  }
+  if (job.prep && !sketched) return { ...job, activity: job.prep }
+  return job
+}
 
 /** Every day, oldest first (today last). */
 export const allDays = (s) => (s.day ? [...s.history, s.day] : s.history)

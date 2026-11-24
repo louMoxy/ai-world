@@ -5,6 +5,10 @@ import { THEMES } from '../making/designs'
 import { AGENTS } from '../agents/agents'
 import { SHIPS } from '../ships/ships'
 
+/** Select a character or ship, which makes the camera follow it. */
+export const follow = (id) =>
+  useWorld.getState().select({ type: AGENTS.some((a) => a.id === id) ? 'agent' : 'ship', id })
+
 const colorOf = (id) => AGENTS.find((a) => a.id === id)?.color ?? SHIPS.find((s) => s.id === id)?.color ?? '#999'
 
 /** Today's challenge: what's being made, how far along it is, and who's doing what. */
@@ -12,6 +16,7 @@ export function ChallengeCard() {
   const day = useMaking((s) => s.day)
   const status = useWorld((s) => s.status)
   const [open, setOpen] = useState(true)
+  const followed = useWorld((s) => (s.selected?.type === 'agent' || s.selected?.type === 'ship' ? s.selected.id : null))
   useCelebration(day)
 
   if (!day) return null
@@ -43,12 +48,20 @@ export function ChallengeCard() {
       {open && (
         <>
           <p className="brief">{day.brief}</p>
+          <p className="muted small">Click someone to follow them.</p>
           <ul className="crew">
             {day.tasks.map((t) => (
               <li key={t.who}>
-                <span className="dot small" style={{ background: colorOf(t.who) }} />
-                <strong>{nameOf(t.who)}</strong>
-                <span className="muted">{status[t.who] ?? t.activity}</span>
+                <button
+                  className={followed === t.who ? 'on' : ''}
+                  onClick={() => follow(t.who)}
+                  title={`Follow ${nameOf(t.who)}`}
+                >
+                  <span className="dot small" style={{ background: colorOf(t.who) }} />
+                  <strong>{nameOf(t.who)}</strong>
+                  <span className="muted">{status[t.who] ?? t.activity}</span>
+                  <span className="follow-icon" aria-hidden>🎥</span>
+                </button>
               </li>
             ))}
           </ul>

@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
@@ -7,6 +7,7 @@ import { OBSTACLES } from '../world/layout'
 import { STATIONS, getStation } from '../stations/stations'
 import { useWorld, isThing } from '../store'
 import { getBrain } from '../brains'
+import { tracked } from '../world/tracking'
 import { getWorkstation } from '../making/workstations'
 import { useMaking, wornOutfit } from '../making/store'
 import { Outfit } from '../making/Outfit'
@@ -34,6 +35,11 @@ export function Agent({ agent }) {
     currentStationId: null,
   })
 
+  useEffect(() => {
+    tracked.set(agent.id, group.current)
+    return () => tracked.delete(agent.id)
+  }, [agent.id])
+
   const hovered = useWorld((s) => isThing(s.hovered, 'agent', agent.id))
   const selected = useWorld((s) => isThing(s.selected, 'agent', agent.id))
   const speech = useWorld((s) => s.speech[agent.id])
@@ -52,7 +58,11 @@ export function Agent({ agent }) {
       if (spot) {
         // Workstations have an exact place to stand.
         setStatus(agent.id, action.status ?? `Walking to the ${spot.name.toLowerCase()}`)
-        return { ...action, tx: spot.stand.x, tz: spot.stand.z, elapsed: 0 }
+        // `side` moves them sideways along the front of the workstation (for a helper).
+        const side = action.side ?? 0
+        const tx = spot.stand.x + Math.cos(spot.rotation) * side
+        const tz = spot.stand.z - Math.sin(spot.rotation) * side
+        return { ...action, tx, tz, elapsed: 0 }
       }
       if (station) {
         setStatus(agent.id, action.status ?? `Walking to ${station.name}`)
@@ -91,91 +101,80 @@ export function Agent({ agent }) {
     const dt = Math.min(rawDt, 0.1)
     const s = sim.current
     const t = state.clock.elapsedTime
-    const paused = isThing(useWorld.getState().selected, 'agent', agent.id)
     let moving = false
     let working = false
     let desiredHeading = s.heading
 
-    if (paused) {
-      // Stop and look at the camera while the user is chatting.
-      desiredHeading = Math.atan2(state.camera.position.x - s.x, state.camera.position.z - s.z)
-    } else {
-      // The brain can cut the current action short (e.g. after an order in chat).
-      if (brain.interrupt) {
-        brain.interrupt = false
-        if (s.action) finish()
-      }
-      // Ask the brain what to do next.
-      if (!s.action && !s.pending) {
-        s.pending = true
-        Promise.resolve(
-          brain.decide({
-            agent: { id: agent.id, name: agent.name, role: agent.role },
-            position: { x: s.x, z: s.z },
-            currentStationId: s.currentStationId,
-            stations: STATION_INFO,
-            lastAction: s.lastAction,
-          }),
-        )
-          .then((action) => (s.action = startAction(action)))
-          .catch(() => (s.action = startAction(null)))
-          .finally(() => (s.pending = false))
-      }
+    // Ask the brain what to do next.
+    if (!s.action && !s.pending) {
+      s.pending = true
+      Promise.resolve(
+        brain.decide({
+          agent: { id: agent.id, name: agent.name, role: agent.role },
+          position: { x: s.x, z: s.z },
+          currentStationId: s.currentStationId,
+          stations: STATION_INFO,
+          lastAction: s.lastAction,
+        }),
+      )
+        .then((action) => (s.action = startAction(action)))
+        .catch(() => (s.action = startAction(null)))
+        .finally(() => (s.pending = false))
+    }
 
-      const a = s.action
-      if (a) {
-        a.elapsed += dt
-        if (a.type === 'walkTo') {
-          const dx = a.tx - s.x
-          const dz = a.tz - s.z
-          const dist = Math.hypot(dx, dz)
-          if (dist < 0.3 || a.elapsed > MAX_WALK_SECONDS) {
-            s.currentStationId = a.stationId
-            finish()
-          } else {
-            let vx = dx / dist
-            let vz = dz / dist
-            // Steer around stations, trees and rocks (not needed in the last stretch).
-            if (dist > 1.5) {
-              let ax = 0
-              let az = 0
-              for (const o of OBSTACLES) {
-                const ox = s.x - o.x
-                const oz = s.z - o.z
-                const d = Math.hypot(ox, oz)
-                const reach = o.r + BODY_RADIUS + 0.2
-                if (d > 0.001 && d < reach + 1.2) {
-                  const push = (reach + 1.2 - d) / 1.2
-                  const nx = ox / d
-                  const nz = oz / d
-                  let tx = -nz
-                  let tz = nx
-                  if (tx * vx + tz * vz < 0) {
-                    tx = -tx
-                    tz = -tz
-                  }
-                  ax += nx * push * 1.2 + tx * push
-                  az += nz * push * 1.2 + tz * push
-                }
-              }
-              vx += ax
-              vz += az
-              const len = Math.hypot(vx, vz) || 1
-              vx /= len
-              vz /= len
-            }
-            s.x += vx * SPEED * dt
-            s.z += vz * SPEED * dt
-            desiredHeading = Math.atan2(vx, vz)
-            moving = true
-          }
+    const a = s.action
+    if (a) {
+      a.elapsed += dt
+      if (a.type === 'walkTo') {
+        const dx = a.tx - s.x
+        const dz = a.tz - s.z
+        const dist = Math.hypot(dx, dz)
+        if (dist < 0.3 || a.elapsed > MAX_WALK_SECONDS) {
+          s.currentStationId = a.stationId
+          finish()
         } else {
-          if (a.type === 'work') {
-            desiredHeading = a.face
-            working = true
+          let vx = dx / dist
+          let vz = dz / dist
+          // Steer around stations, trees and rocks (not needed in the last stretch).
+          if (dist > 1.5) {
+            let ax = 0
+            let az = 0
+            for (const o of OBSTACLES) {
+              const ox = s.x - o.x
+              const oz = s.z - o.z
+              const d = Math.hypot(ox, oz)
+              const reach = o.r + BODY_RADIUS + 0.2
+              if (d > 0.001 && d < reach + 1.2) {
+                const push = (reach + 1.2 - d) / 1.2
+                const nx = ox / d
+                const nz = oz / d
+                let tx = -nz
+                let tz = nx
+                if (tx * vx + tz * vz < 0) {
+                  tx = -tx
+                  tz = -tz
+                }
+                ax += nx * push * 1.2 + tx * push
+                az += nz * push * 1.2 + tz * push
+              }
+            }
+            vx += ax
+            vz += az
+            const len = Math.hypot(vx, vz) || 1
+            vx /= len
+            vz /= len
           }
-          if (a.elapsed >= (a.seconds ?? 2)) finish()
+          s.x += vx * SPEED * dt
+          s.z += vz * SPEED * dt
+          desiredHeading = Math.atan2(vx, vz)
+          moving = true
         }
+      } else {
+        if (a.type === 'work') {
+          desiredHeading = a.face
+          working = true
+        }
+        if (a.elapsed >= (a.seconds ?? 2)) finish()
       }
     }
 

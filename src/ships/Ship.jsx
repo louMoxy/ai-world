@@ -1,10 +1,11 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { waveHeight } from '../world/terrain'
 import { useWorld, isThing } from '../store'
 import { getBrain } from '../brains'
+import { tracked } from '../world/tracking'
 import { WAYPOINTS, WAYPOINT_INFO, BERTHS, planRoute } from './navigation'
 
 const MAX_SPEED = 3.4
@@ -45,6 +46,11 @@ export function Ship({ ship }) {
     }
     if (import.meta.env.DEV) (window.__ships ??= {})[ship.id] = sim.current
   }
+
+  useEffect(() => {
+    tracked.set(ship.id, group.current)
+    return () => tracked.delete(ship.id)
+  }, [ship.id])
 
   const hovered = useWorld((s) => isThing(s.hovered, 'ship', ship.id))
   const selected = useWorld((s) => isThing(s.selected, 'ship', ship.id))
@@ -90,12 +96,6 @@ export function Ship({ ship }) {
     const dt = Math.min(rawDt, 0.1)
     const t = state.clock.elapsedTime
     const s = sim.current
-
-    // The brain can cut the current action short (e.g. after an order in chat).
-    if (brain.interrupt) {
-      brain.interrupt = false
-      if (s.action) finish()
-    }
 
     if (!s.action && !s.pending) {
       s.pending = true

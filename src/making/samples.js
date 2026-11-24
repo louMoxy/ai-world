@@ -5,19 +5,21 @@
  *
  * A day plan: { theme, title, brief, notes, design, tasks }
  *   design may refer to earlier work with 'latest-fabric' or basedOn: 'latest-print'.
- *   tasks: one per character/ship.
+ *   tasks: one per character and ship. With two makers, one sketches and the other builds.
  *     job 'sketch' -> draws the design at the easel
  *     job 'make'   -> builds it at the printer, loom or mannequin
- *     job 'gather' -> works at a station (research, picking colours…)
+ *     job 'gather' -> works at a station (research, picking colours…), for a bigger crew
  *     job 'fetch'  -> a ship sails to a waypoint and brings materials back to the harbour
  *   activity is what they're shown doing; prep (optional) is shown while the sketch is drawn.
  */
 
-const ships = (cargo) => [
-  { who: 'gull', job: 'fetch', at: 'ne', activity: `Fetching ${cargo[0]}`, lines: ['Cargo aboard!', 'Fair winds for deliveries.'] },
-  { who: 'marlin', job: 'fetch', at: 's', activity: `Collecting ${cargo[1]}`, lines: ['Hauling it in!', 'Heavy load today.'] },
-  { who: 'drifter', job: 'fetch', at: 'nw', activity: `Searching for ${cargo[2]}`, lines: ['Found some!', 'Rare stuff out here.'] },
-]
+const ship = (cargo) => ({
+  who: 'gull',
+  job: 'fetch',
+  at: 'ne',
+  activity: `Fetching ${cargo}`,
+  lines: ['Cargo aboard!', 'Fair winds for deliveries.'],
+})
 
 export const SAMPLE_DAYS = [
   {
@@ -27,10 +29,9 @@ export const SAMPLE_DAYS = [
     notes: ['Colours of the shallows at noon', 'Basket weave: soft but strong', 'Enough cloth for a scarf!'],
     design: { kind: 'fabric', name: 'Sea-Glass Weave', pattern: 'weave', colors: ['#2a9d8f', '#a8dadc', '#f1faee'], scale: 4 },
     tasks: [
-      { who: 'sage', job: 'sketch', at: 'easel', activity: 'Sketching the weave pattern', lines: ['Over, under, over, under…', 'The sea has so many greens.'] },
+      { who: 'nova', job: 'sketch', at: 'easel', activity: 'Sketching the weave pattern', lines: ['Over, under, over, under…', 'The sea has so many greens.'] },
       { who: 'pip', job: 'make', at: 'loom', activity: 'Weaving the cloth', prep: 'Threading the loom', lines: ['Clack, clack, clack!', 'Mind your fingers!'] },
-      { who: 'nova', job: 'gather', at: 'library', activity: 'Matching colours to sea glass', lines: ['This one is perfect!', 'Look how it shines.'] },
-      ...ships(['sea-green dye', 'cotton bales', 'kelp for dye']),
+      ship('sea-green dye'),
     ],
   },
   {
@@ -40,10 +41,9 @@ export const SAMPLE_DAYS = [
     notes: ['Scarf from the Sea-Glass Weave', 'Red beret: easy to spot!', 'Tied loose for the sea breeze'],
     design: { kind: 'outfit', name: "Nova's Harbour Look", wearer: 'nova', hat: { style: 'beret', color: '#e63946' }, neck: { style: 'scarf', fabric: 'latest-fabric' } },
     tasks: [
-      { who: 'sage', job: 'sketch', at: 'easel', activity: 'Drawing the outfit', lines: ['A little tilt on the beret…', 'Red and sea-green go well.'] },
+      { who: 'nova', job: 'sketch', at: 'easel', activity: 'Designing her own outfit', lines: ['A little tilt on the beret…', 'Red and sea-green go well.'] },
       { who: 'pip', job: 'make', at: 'mannequin', activity: 'Sewing the scarf and beret', prep: 'Cutting the pattern', lines: ['Measure twice, cut once!', 'Nearly there…'] },
-      { who: 'nova', job: 'gather', at: 'harbour', activity: 'Testing the wind at the harbour', lines: ['It is SO windy here.', 'I need that beret!'] },
-      ...ships(['red felt', 'buttons and thread', 'a lucky shell']),
+      ship('red felt'),
     ],
   },
   {
@@ -71,8 +71,7 @@ export const SAMPLE_DAYS = [
     tasks: [
       { who: 'nova', job: 'sketch', at: 'easel', activity: 'Sketching the lantern', lines: ['Should the roof be pointy? Yes.', 'A ring on top to hang it!'] },
       { who: 'pip', job: 'make', at: 'printer', activity: 'Printing the lantern', prep: 'Warming up the printer', lines: ['Layer by layer…', 'Nozzle is nice and hot.'] },
-      { who: 'sage', job: 'gather', at: 'library', activity: 'Reading about lighthouses', lines: ['Lighthouses use lenses…', 'Fascinating.'] },
-      ...ships(['red filament', 'amber filament', 'clear filament']),
+      ship('red filament'),
     ],
   },
   {
@@ -82,10 +81,9 @@ export const SAMPLE_DAYS = [
     notes: ['Sunset over the west waypoint', 'Wide stripes, bold colours', 'Warm enough for a cape'],
     design: { kind: 'fabric', name: 'Sunset Stripes', pattern: 'stripes', colors: ['#f4a261', '#e76f51', '#ffd166', '#264653'], scale: 3 },
     tasks: [
-      { who: 'nova', job: 'sketch', at: 'easel', activity: 'Painting the stripes', lines: ['More orange!', 'This is my favourite sunset.'] },
-      { who: 'sage', job: 'make', at: 'loom', activity: 'Weaving the stripes', prep: 'Winding the coloured thread', lines: ['Steady hands…', 'One stripe at a time.'] },
-      { who: 'pip', job: 'gather', at: 'workshop', activity: 'Mixing the dyes', lines: ['Orange plus a bit more orange.', 'Oops, coral everywhere.'] },
-      ...ships(['orange dye', 'wool bales', 'golden thread']),
+      { who: 'pip', job: 'sketch', at: 'easel', activity: 'Drawing the stripes', lines: ['More orange!', 'Rulers make straight stripes.'] },
+      { who: 'nova', job: 'make', at: 'loom', activity: 'Weaving the stripes', prep: 'Winding the coloured thread', lines: ['Steady hands…', 'One stripe at a time.'] },
+      ship('orange dye'),
     ],
   },
   {
@@ -95,10 +93,9 @@ export const SAMPLE_DAYS = [
     notes: ['Cape from the Sunset Stripes', 'Top hat for serious inventing', 'Short enough not to catch in the printer'],
     design: { kind: 'outfit', name: "Pip's Workshop Cape", wearer: 'pip', hat: { style: 'top', color: '#2b2d42' }, neck: { style: 'cape', fabric: 'latest-fabric' } },
     tasks: [
-      { who: 'sage', job: 'sketch', at: 'easel', activity: 'Drawing the cape', lines: ['A swish of a cape…', 'Very dramatic.'] },
+      { who: 'pip', job: 'sketch', at: 'easel', activity: 'Designing his own cape', lines: ['A swish of a cape…', 'Very inventive.'] },
       { who: 'nova', job: 'make', at: 'mannequin', activity: 'Sewing the cape', prep: 'Pinning the fabric', lines: ['Ouch, pins!', 'It flows so nicely.'] },
-      { who: 'pip', job: 'gather', at: 'workshop', activity: 'Making room for a cape', lines: ['I will look SO inventive.', 'Is the hat tall enough?'] },
-      ...ships(['black felt', 'a velvet ribbon', 'a brass clasp']),
+      ship('black felt'),
     ],
   },
   {
@@ -129,9 +126,8 @@ export const SAMPLE_DAYS = [
     },
     tasks: [
       { who: 'pip', job: 'sketch', at: 'easel', activity: 'Redesigning the lantern', lines: ['What if… two roofs?', 'Mark II will be brighter.'] },
-      { who: 'sage', job: 'make', at: 'printer', activity: 'Printing Mark II', prep: 'Levelling the print bed', lines: ['Patience. Layer by layer.', 'It is taller than me!'] },
-      { who: 'nova', job: 'gather', at: 'gallery', activity: 'Studying the first lantern', lines: ['The old one is so cute.', 'Mark II will be even better!'] },
-      ...ships(['gold filament', 'teal filament', 'spare nozzles']),
+      { who: 'nova', job: 'make', at: 'printer', activity: 'Printing Mark II', prep: 'Levelling the print bed', lines: ['Patience. Layer by layer.', 'It is taller than me!'] },
+      ship('gold filament'),
     ],
   },
 ]

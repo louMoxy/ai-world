@@ -12,14 +12,14 @@ const savedLook = () => {
 }
 
 /**
- * Shared app state: what's hovered or selected, chat history, and speech bubbles.
- * A thing is referred to as { type: 'station' | 'agent' | 'ship', id }.
+ * Shared app state: what's hovered or selected (followed), speech bubbles and status.
+ * A thing is referred to as { type: 'station' | 'agent' | 'ship' | 'log', id }.
+ * Selecting a character or ship makes the camera follow it.
  */
 export const useWorld = create((set) => ({
   ready: false,
   hovered: null,
   selected: null,
-  chats: {}, // agentId -> [{ from: 'user' | 'agent', text }]
   speech: {}, // id -> text shown in a bubble above their head
   status: {}, // id -> what they're doing now, e.g. "Sailing to North"
   look: savedLook(), // id of the current look, see src/looks/looks.js
@@ -36,9 +36,6 @@ export const useWorld = create((set) => ({
   setHovered: (hovered) => set({ hovered }),
   select: (selected) => set({ selected }),
   clearSelection: () => set({ selected: null }),
-
-  addMessage: (agentId, message) =>
-    set((s) => ({ chats: { ...s.chats, [agentId]: [...(s.chats[agentId] ?? []), message] } })),
 
   say: (agentId, text, seconds = 4) => {
     clearTimeout(speechTimers[agentId])

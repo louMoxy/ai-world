@@ -6,38 +6,25 @@
  *   decide(context) -> Action          (may be async)
  *     Called whenever the character or ship has finished what it was doing.
  *
- *   respond(message, context) -> string (may be async)
- *     Called when the user chats with it. context = { self: { id, name, role }, history }
- *
- *   interrupt: boolean (optional)
- *     Set to true to make it drop what it's doing and call decide() again
- *     right away, e.g. after being given an order in chat.
- *
  * CHARACTER context:  { agent, position, currentStationId, stations, lastAction }
- * CHARACTER actions:  { type: 'walkTo', stationId } | { type: 'idle', seconds } | { type: 'say', text, seconds }
+ * CHARACTER actions:  { type: 'walkTo', stationId, side? } | { type: 'work', seconds }
+ *                     | { type: 'idle', seconds } | { type: 'say', text, seconds }
  *
  * SHIP context:       { ship, position, atDock, currentWaypointId, waypoints, lastAction }
  * SHIP actions:       { type: 'sailTo', waypointId } | { type: 'dock', seconds }
  *                     | { type: 'idle', seconds } | { type: 'say', text, seconds }
  *
- * This file is the placeholder brain for characters. shipBrain.js is the one for ships.
- * aiBrain.js shows where a real model would plug in.
+ * Any action can carry a `status` text, shown as what they're doing right now.
+ *
+ * This file is the placeholder brain for characters when they're off work. shipBrain.js
+ * is the one for ships. src/making/makerBrain.js wraps both so they work on the day's
+ * making challenge.
  */
 
 export const pick = (list) => list[Math.floor(Math.random() * list.length)]
-export const wait = (ms) => new Promise((r) => setTimeout(r, ms))
-
-const REPLIES = [
-  "That's interesting! Tell me more.",
-  'Hmm, I will have to think about that.',
-  "I'd love to help with that one day.",
-  'Good question!',
-]
 
 export function createScriptedBrain(agent) {
   return {
-    interrupt: false,
-
     decide({ stations, currentStationId, lastAction }) {
       // After arriving somewhere, pause or say something before moving on.
       if (lastAction?.type === 'walkTo') {
@@ -50,11 +37,6 @@ export function createScriptedBrain(agent) {
       }
       const options = stations.filter((s) => s.id !== currentStationId)
       return { type: 'walkTo', stationId: pick(options).id }
-    },
-
-    async respond() {
-      await wait(500 + Math.random() * 500) // pretend to think
-      return `${pick(REPLIES)} (I'm running on a placeholder brain for now. A real AI model will answer here later.)`
     },
   }
 }

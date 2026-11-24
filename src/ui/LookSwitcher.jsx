@@ -6,7 +6,7 @@ import { LOOKS, getLook } from '../looks/looks'
 export function LookSwitcher() {
   const look = useWorld((s) => s.look)
   const setLook = useWorld((s) => s.setLook)
-  const selected = useWorld((s) => s.selected)
+  const panelOpen = useWorld((s) => s.selected?.type === 'station' || s.selected?.type === 'log')
 
   useEffect(() => {
     const onKey = (e) => {
@@ -25,7 +25,7 @@ export function LookSwitcher() {
   }, [look])
 
   return (
-    <nav className={`looks ${selected ? 'beside-panel' : ''}`} aria-label="Look">
+    <nav className={`looks ${panelOpen ? 'beside-panel' : ''}`} aria-label="Look">
       <div className="looks-title">Look</div>
       {LOOKS.map((l, i) => (
         <button
