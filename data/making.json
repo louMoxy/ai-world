@@ -1,0 +1,361 @@
+{
+  "day": {
+    "id": "2026-11-26-3",
+    "number": 3,
+    "date": "2026-11-26",
+    "title": "Harbour Lantern",
+    "brief": "Print a lantern to light the harbour at night: a sturdy base, glass all round, and a red roof with a ring to hang it by.",
+    "notes": [
+      "Glass on all four sides",
+      "Red roof, like the boats",
+      "Ring on top for hanging"
+    ],
+    "design": {
+      "kind": "print",
+      "name": "Harbour Lantern",
+      "parts": [
+        {
+          "shape": "cylinder",
+          "at": [
+            0,
+            0.1,
+            0
+          ],
+          "color": "#3d405b",
+          "radius": 0.7,
+          "height": 0.2
+        },
+        {
+          "shape": "torus",
+          "at": [
+            0,
+            0.2,
+            0
+          ],
+          "color": "#e0a458",
+          "rot": [
+            90,
+            0,
+            0
+          ],
+          "radius": 0.62,
+          "tube": 0.06
+        },
+        {
+          "shape": "box",
+          "at": [
+            0,
+            0.75,
+            0
+          ],
+          "color": "#ffe8a3",
+          "size": [
+            0.9,
+            1,
+            0.9
+          ]
+        },
+        {
+          "shape": "box",
+          "at": [
+            0.45,
+            0.75,
+            0.45
+          ],
+          "color": "#3d405b",
+          "size": [
+            0.1,
+            1.05,
+            0.1
+          ]
+        },
+        {
+          "shape": "box",
+          "at": [
+            -0.45,
+            0.75,
+            0.45
+          ],
+          "color": "#3d405b",
+          "size": [
+            0.1,
+            1.05,
+            0.1
+          ]
+        },
+        {
+          "shape": "box",
+          "at": [
+            0.45,
+            0.75,
+            -0.45
+          ],
+          "color": "#3d405b",
+          "size": [
+            0.1,
+            1.05,
+            0.1
+          ]
+        },
+        {
+          "shape": "box",
+          "at": [
+            -0.45,
+            0.75,
+            -0.45
+          ],
+          "color": "#3d405b",
+          "size": [
+            0.1,
+            1.05,
+            0.1
+          ]
+        },
+        {
+          "shape": "box",
+          "at": [
+            0,
+            1.31,
+            0
+          ],
+          "color": "#3d405b",
+          "size": [
+            1.15,
+            0.12,
+            1.15
+          ]
+        },
+        {
+          "shape": "cone",
+          "at": [
+            0,
+            1.67,
+            0
+          ],
+          "color": "#e63946",
+          "radius": 0.8,
+          "height": 0.6
+        },
+        {
+          "shape": "sphere",
+          "at": [
+            0,
+            1.98,
+            0
+          ],
+          "color": "#e0a458",
+          "radius": 0.1
+        },
+        {
+          "shape": "torus",
+          "at": [
+            0,
+            2.3,
+            0
+          ],
+          "color": "#e0a458",
+          "radius": 0.25,
+          "tube": 0.05
+        }
+      ]
+    },
+    "tasks": [
+      {
+        "who": "nova",
+        "job": "sketch",
+        "at": "easel",
+        "activity": "Sketching the lantern",
+        "lines": [
+          "Should the roof be pointy? Yes.",
+          "A ring on top to hang it!"
+        ]
+      },
+      {
+        "who": "pip",
+        "job": "make",
+        "at": "printer",
+        "activity": "Printing the lantern",
+        "prep": "Warming up the printer",
+        "lines": [
+          "Layer by layer…",
+          "Nozzle is nice and hot."
+        ]
+      },
+      {
+        "who": "gull",
+        "job": "fetch",
+        "at": "ne",
+        "activity": "Fetching red filament",
+        "lines": [
+          "Cargo aboard!",
+          "Fair winds for deliveries."
+        ]
+      }
+    ],
+    "basedOn": null,
+    "sketcher": "Nova",
+    "done": 30,
+    "needed": 30,
+    "credits": {
+      "nova": 14,
+      "pip": 14,
+      "gull": 2
+    },
+    "status": "finished",
+    "finishedAt": 1795539013301,
+    "report": "Harbour Lantern is finished! Nova drew the plans, Pip did the printing The ships made 2 deliveries. It now stands in the Gallery."
+  },
+  "history": [
+    {
+      "id": "2026-11-24-1",
+      "number": 1,
+      "date": "2026-11-24",
+      "title": "Sea-Glass Weave",
+      "brief": "Weave a soft cloth in the colours of sea glass: greens and pale blues that look like the shallows at noon.",
+      "notes": [
+        "Colours of the shallows at noon",
+        "Basket weave: soft but strong",
+        "Enough cloth for a scarf!"
+      ],
+      "design": {
+        "kind": "fabric",
+        "name": "Sea-Glass Weave",
+        "pattern": "weave",
+        "colors": [
+          "#2a9d8f",
+          "#a8dadc",
+          "#f1faee"
+        ],
+        "scale": 4
+      },
+      "tasks": [
+        {
+          "who": "nova",
+          "job": "sketch",
+          "at": "easel",
+          "activity": "Sketching the weave pattern",
+          "lines": [
+            "Over, under, over, under…",
+            "The sea has so many greens."
+          ]
+        },
+        {
+          "who": "pip",
+          "job": "make",
+          "at": "loom",
+          "activity": "Weaving the cloth",
+          "prep": "Threading the loom",
+          "lines": [
+            "Clack, clack, clack!",
+            "Mind your fingers!"
+          ]
+        },
+        {
+          "who": "gull",
+          "job": "fetch",
+          "at": "ne",
+          "activity": "Fetching sea-green dye",
+          "lines": [
+            "Cargo aboard!",
+            "Fair winds for deliveries."
+          ]
+        }
+      ],
+      "basedOn": null,
+      "sketcher": "Nova",
+      "done": 30,
+      "needed": 30,
+      "credits": {
+        "nova": 14,
+        "pip": 14,
+        "gull": 2
+      },
+      "status": "finished",
+      "finishedAt": 1795538800569,
+      "report": "Sea-Glass Weave is finished! Nova drew the plans, Pip did the weaving The ships made 2 deliveries. The cloth hangs in the Gallery, ready for a future outfit."
+    },
+    {
+      "id": "2026-11-25-2",
+      "number": 2,
+      "date": "2026-11-25",
+      "title": "Nova's Harbour Look",
+      "brief": "Turn yesterday’s sea-glass cloth into a scarf for Nova, with a bright red beret for windy days at the harbour.",
+      "notes": [
+        "Scarf from the Sea-Glass Weave",
+        "Red beret: easy to spot!",
+        "Tied loose for the sea breeze"
+      ],
+      "design": {
+        "kind": "outfit",
+        "name": "Nova's Harbour Look",
+        "wearer": "nova",
+        "hat": {
+          "style": "beret",
+          "color": "#e63946"
+        },
+        "neck": {
+          "style": "scarf",
+          "fabric": {
+            "kind": "fabric",
+            "name": "Sea-Glass Weave",
+            "pattern": "weave",
+            "colors": [
+              "#2a9d8f",
+              "#a8dadc",
+              "#f1faee"
+            ],
+            "scale": 4
+          }
+        }
+      },
+      "tasks": [
+        {
+          "who": "nova",
+          "job": "sketch",
+          "at": "easel",
+          "activity": "Designing her own outfit",
+          "lines": [
+            "A little tilt on the beret…",
+            "Red and sea-green go well."
+          ]
+        },
+        {
+          "who": "pip",
+          "job": "make",
+          "at": "mannequin",
+          "activity": "Sewing the scarf and beret",
+          "prep": "Cutting the pattern",
+          "lines": [
+            "Measure twice, cut once!",
+            "Nearly there…"
+          ]
+        },
+        {
+          "who": "gull",
+          "job": "fetch",
+          "at": "ne",
+          "activity": "Fetching red felt",
+          "lines": [
+            "Cargo aboard!",
+            "Fair winds for deliveries."
+          ]
+        }
+      ],
+      "basedOn": {
+        "id": "2026-11-24-1",
+        "title": "Sea-Glass Weave"
+      },
+      "sketcher": "Nova",
+      "done": 26,
+      "needed": 30,
+      "credits": {
+        "dev": 2,
+        "pip": 2
+      },
+      "status": "unfinished",
+      "finishedAt": null,
+      "report": "The island got 87% of the way through Nova's Harbour Look before the day ended. It's kept in the log, unfinished."
+    }
+  ],
+  "seq": 3
+}

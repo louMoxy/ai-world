@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Then open http://localhost:5173.
+Then open http://localhost:5173. This also starts the island's small server (see "The server" below).
 
 **Controls:** drag to rotate, scroll to zoom, right-drag to pan. Click a character or ship (or their name on the challenge card or in the Island Log) to zoom in and follow them; the panel shows what they are doing. Click a station to read about it. Press Esc to stop following or close a panel. Press 1–6 (or use the list in the corner) to change the look.
 
@@ -46,14 +46,23 @@ src/
   making/
     designs.js          Design formats (print, fabric, outfit) and the limits every design is checked against
     samples.js          Hand-written days, used until the AI writes them
-    store.js            The day: progress, finishing, the report and the log
-    storage.js          Where days are saved (this browser for now; the server in stage 2)
+    days.js             The rules of a day (shared by the server and the browser)
+    store.js            The day in the browser: talks to the server, shows progress
+    storage.js          Saving in the browser, only used when there is no server
     makerBrain.js       Makes the characters and ships work on the day's jobs
     sketch.js           Draws each day's sketch, stroke by stroke
     fabric.js           Paints fabric patterns (sketches and 3D cloth)
     workstations.js     Where the easel, printer, mannequin, loom and gallery displays are
     MakingWorld.jsx     The easel, 3D printer, mannequin, loom and Gallery in the world
   ui/                   Overlay, follow and station panel, look switcher, challenge card, Island Log, loading screen
+server/
+  makingApi.js          The island's server: saves the days, starts new ones, takes in work
+  planner.js            Plans each new day (where the AI goes in stage 3)
+  budget.js             Daily AI spending ledger (data/spend.json)
+  jsonFile.js           Safe saving of JSON files
+data/
+  making.json           Every day the island has had (kept in git)
+.env.example            Settings for the server; copy to .env (never committed)
 ```
 
 ## Looks
@@ -81,7 +90,20 @@ The **Island Log** (on the challenge card, or click any workstation or Gallery p
 
 A new day starts the first time you open the world on a new date. In the dev server, the challenge card has **+25%** and **Next day** buttons for testing.
 
-Designs are plain data, never code. `validateDesign` in `src/making/designs.js` checks every one against strict limits (parts, sizes, colours, the print area), so an AI-written design can never break the world. For now the days come from `samples.js` and are saved in this browser. Stage 2 adds a server to save them, and stage 3 has an AI write the daily challenge and report.
+Designs are plain data, never code. `validateDesign` in `src/making/designs.js` checks every one against strict limits (parts, sizes, colours, the print area), so an AI-written design can never break the world. For now the days come from `samples.js`. Stage 3 has an AI write the daily challenge and report.
+
+## The server
+
+`npm run dev` (and `npm run preview`) also run a small server inside Vite (`server/makingApi.js`). It:
+
+- saves every day in `data/making.json`, so the log and Gallery are the same in any browser and are kept in git;
+- starts a new day the first time the world is opened on a new date, closing the old one with its report;
+- takes in each finished job (it only accepts the real characters and ship, one turn at a time);
+- will hold the API key and the daily AI budget in stage 3.
+
+Settings go in a `.env` file: copy `.env.example` to `.env`. It's never committed. The server reads it; the browser never sees it.
+
+If the site is ever hosted as plain files with no server, it still works: the same day rules run in the browser and days are saved there instead. Days that were saved in a browser before the server existed are moved to the server automatically, once.
 
 ## Adding AI later
 

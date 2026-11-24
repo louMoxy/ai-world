@@ -4,3 +4,10 @@ dist
 *.log
 .env
 .env.*
+
+# The example settings file is safe to share; the real .env is not.
+!.env.example
+
+# Temporary files from saving the days
+data/*.tmp
+data/*.broken-*

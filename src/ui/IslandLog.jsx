@@ -29,6 +29,7 @@ export function IslandLog({ openId }) {
   const newestFirst = [...days].reverse()
   const open = newestFirst.find((d) => d.id === openId) ?? newestFirst[0]
   const made = days.filter((d) => d.status === 'finished').length
+  const storage = useMaking((s) => s.storage)
   const select = (id) => useWorld.getState().select({ type: 'log', id })
 
   return (
@@ -38,7 +39,8 @@ export function IslandLog({ openId }) {
         <div>
           <h2>Island Log</h2>
           <p className="muted">
-            {days.length} {days.length === 1 ? 'day' : 'days'} · {made} {made === 1 ? 'creation' : 'creations'}
+            {days.length} {days.length === 1 ? 'day' : 'days'} · {made} {made === 1 ? 'creation' : 'creations'} ·{' '}
+            {storage === 'server' ? 'saved on the server' : 'saved in this browser'}
           </p>
         </div>
       </div>
@@ -85,7 +87,8 @@ function LogEntry({ day, onOpen }) {
         <img className="sketch" src={image} alt={`Sketch of ${day.title}`} />
       </a>
       <p className="muted small">
-        Sketch by {day.sketcher}. Click it to download.
+        Sketch by {day.sketcher}. Click it to download. Planned by{' '}
+        {!day.plannedBy || day.plannedBy === 'sample' ? 'a hand-written sample' : day.plannedBy}.
       </p>
       <p>{day.brief}</p>
       {day.basedOn && (
