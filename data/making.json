@@ -207,152 +207,269 @@
     "aiReport": "The Harbour Lantern is finished and glowing in the Gallery! A sturdy base, warm glass on all four sides, a red roof like the boats and a little ring on top to hang it by.\n\nNova drew the plans in 14 turns, humming and deciding very quickly that the roof had to be pointy. Pip matched her with 14 turns at the printer, laying it down layer by layer and quietly pleased the nozzle never clogged once. That called for tea.\n\nThe Gull made 2 deliveries of red filament, both perfectly dry, and came home to the harbour proudly, as if she'd lit the lantern herself.\n\nNow the harbour has a light. Next, perhaps something bright and striped to go with it.",
     "visits": [
       {
-        "t": 1795616142992,
-        "who": "nova",
-        "place": "library",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616155718,
-        "who": "nova",
-        "place": "observatory",
-        "kind": "visit",
-        "note": "Don’t look now, but I’m having a genius moment."
-      },
-      {
-        "t": 1795616163458,
-        "who": "nova",
-        "place": "gallery",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616169672,
+        "t": 1795616488535,
         "who": "pip",
         "place": "harbour",
         "kind": "visit",
-        "note": "The Harbour needs a few tweaks."
+        "note": "Ropes need re-coiling. Again."
       },
       {
-        "t": 1795616171552,
-        "who": "nova",
-        "place": "hub",
-        "kind": "visit",
-        "note": "The The Spire! Hello, The Spire."
-      },
-      {
-        "t": 1795616179032,
-        "who": "nova",
-        "place": "observatory",
-        "kind": "visit",
-        "note": "You can see the whole island from up here!"
-      },
-      {
-        "t": 1795616187269,
-        "who": "nova",
-        "place": "gallery",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616203258,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit",
-        "note": "Everything where I left it. Good."
-      },
-      {
-        "t": 1795616208058,
+        "t": 1795616500353,
         "who": "pip",
         "place": "hub",
-        "kind": "visit"
+        "kind": "visit",
+        "note": "Ah, the Spire. Still standing. Low bar, but well done."
       },
       {
-        "t": 1795616220893,
+        "t": 1795616508021,
         "who": "nova",
         "place": "garden",
         "kind": "visit",
         "note": "The Garden Gate! Hello, Garden Gate."
       },
       {
-        "t": 1795616247490,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit",
-        "note": "The The Spire needs a few tweaks."
-      },
-      {
-        "t": 1795616255559,
-        "who": "pip",
-        "place": "observatory",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616276594,
-        "who": "nova",
-        "place": "library",
-        "kind": "visit",
-        "note": "So many books. So few colourful covers."
-      },
-      {
-        "t": 1795616288261,
-        "who": "nova",
-        "place": "observatory",
-        "kind": "visit",
-        "note": "Ooh, what is the Observatory for?"
-      },
-      {
-        "t": 1795616290225,
+        "t": 1795616512853,
         "who": "pip",
         "place": "harbour",
         "kind": "visit",
-        "note": "Beep boop. Just kidding."
+        "note": "Ropes need re-coiling. Again."
       },
       {
-        "t": 1795616299527,
-        "who": "nova",
-        "place": "library",
-        "kind": "visit",
-        "note": "I love the view from here."
-      },
-      {
-        "t": 1795616310879,
-        "who": "nova",
-        "place": "observatory",
+        "t": 1795616686883,
+        "who": "pip",
+        "place": "workshop",
         "kind": "visit"
       },
       {
-        "t": 1795616319393,
+        "t": 1795616703871,
         "who": "nova",
+        "place": "observatory",
+        "kind": "visit",
+        "note": "The sky is doing gradients again. Show-off."
+      },
+      {
+        "t": 1795616721550,
+        "who": "pip",
         "place": "hub",
         "kind": "visit",
-        "note": "Did that crystal just flicker?"
+        "note": "Hmm, where did I leave my wrench?"
       },
       {
-        "t": 1795616325561,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit",
-        "note": "Everything where I left it. Good."
-      },
-      {
-        "t": 1795616328976,
+        "t": 1795616738902,
         "who": "nova",
+        "place": "harbour",
+        "kind": "visit",
+        "note": "I have SO many ideas today."
+      },
+      {
+        "t": 1795616755103,
+        "who": "pip",
         "place": "library",
         "kind": "visit",
-        "note": "So many books. So few colourful covers."
+        "note": "Hmm, where did I leave my wrench?"
       },
       {
-        "t": 1795616335726,
+        "t": 1795616772285,
         "who": "pip",
         "place": "garden",
         "kind": "visit",
         "note": "The Garden Gate. Hm."
       },
       {
-        "t": 1795616341526,
+        "t": 1795616773418,
+        "who": "nova",
+        "place": "gallery",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616783802,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616795169,
+        "who": "pip",
+        "place": "hub",
+        "kind": "visit",
+        "note": "The Spire. Hm."
+      },
+      {
+        "t": 1795616807723,
+        "who": "pip",
+        "place": "harbour",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616809422,
         "who": "nova",
         "place": "observatory",
         "kind": "visit",
-        "note": "You can see the whole island from up here!"
+        "note": "Ooh, what is the Observatory for?"
+      },
+      {
+        "t": 1795616820787,
+        "who": "pip",
+        "place": "hub",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616825339,
+        "who": "nova",
+        "place": "harbour",
+        "kind": "visit",
+        "note": "Waves are just the sea waving hello."
+      },
+      {
+        "t": 1795616832021,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616832720,
+        "who": "nova",
+        "place": "workshop",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616843188,
+        "who": "pip",
+        "place": "harbour",
+        "kind": "visit",
+        "note": "Ropes need re-coiling. Again."
+      },
+      {
+        "t": 1795616855777,
+        "who": "pip",
+        "place": "hub",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616867327,
+        "who": "nova",
+        "place": "garden",
+        "kind": "visit",
+        "note": "Is it just me, or does the Garden Gate need more glitter?"
+      },
+      {
+        "t": 1795616889496,
+        "who": "pip",
+        "place": "library",
+        "kind": "visit",
+        "note": "Ah, the Library. Still standing. Low bar, but well done."
+      },
+      {
+        "t": 1795616897897,
+        "who": "pip",
+        "place": "hub",
+        "kind": "visit",
+        "note": "The Spire. Hm."
+      },
+      {
+        "t": 1795616900928,
+        "who": "nova",
+        "place": "observatory",
+        "kind": "visit",
+        "note": "I love the view from here."
+      },
+      {
+        "t": 1795616909163,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616916826,
+        "who": "pip",
+        "place": "hub",
+        "kind": "visit",
+        "note": "Ah, the Spire. Still standing. Low bar, but well done."
+      },
+      {
+        "t": 1795617271266,
+        "who": "nova",
+        "place": "garden",
+        "kind": "visit",
+        "note": "The Garden Gate! Hello, Garden Gate."
+      },
+      {
+        "t": 1795617287168,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit",
+        "note": "Everything where I left it. Good."
+      },
+      {
+        "t": 1795617304809,
+        "who": "nova",
+        "place": "workshop",
+        "kind": "visit",
+        "note": "The Workshop! Hello, Workshop."
+      },
+      {
+        "t": 1795617318204,
+        "who": "pip",
+        "place": "gallery",
+        "kind": "visit"
+      },
+      {
+        "t": 1795617332538,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit"
+      },
+      {
+        "t": 1795617337538,
+        "who": "nova",
+        "place": "observatory",
+        "kind": "visit"
+      },
+      {
+        "t": 1795617341072,
+        "who": "pip",
+        "place": "harbour",
+        "kind": "visit"
+      },
+      {
+        "t": 1795617359190,
+        "who": "pip",
+        "place": "garden",
+        "kind": "visit",
+        "note": "Hmm, where did I leave my wrench?"
+      },
+      {
+        "t": 1795617372457,
+        "who": "nova",
+        "place": "hub",
+        "kind": "visit"
+      },
+      {
+        "t": 1795617375990,
+        "who": "pip",
+        "place": "gallery",
+        "kind": "visit",
+        "note": "Is that roof a bit wonky? Nobody’s noticed. Good."
+      },
+      {
+        "t": 1795617392959,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit"
+      },
+      {
+        "t": 1795617404956,
+        "who": "nova",
+        "place": "garden",
+        "kind": "visit",
+        "note": "Is it just me, or does the Garden Gate need more glitter?"
+      },
+      {
+        "t": 1795617408658,
+        "who": "nova",
+        "place": "hub",
+        "kind": "visit",
+        "note": "The Spire! Hello, The Spire."
       }
     ]
   },

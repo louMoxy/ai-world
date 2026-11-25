@@ -15,6 +15,11 @@ import { SHIPS } from '../ships/ships'
  *
  * Each finished job adds one to day.done. The first SKETCH_SHARE of the work draws the
  * sketch; the rest builds the thing. When done reaches needed, it's finished.
+ *
+ * The island also has a clock: a day's work runs from WORK_HOURS[0] to WORK_HOURS[1],
+ * island time, and the day always keeps up with it (catchUp), so it's finished by the
+ * evening even if nobody is watching. Watching speeds it up: every job the characters
+ * finish in an open browser counts on top.
  */
 
 export const NEEDED = 30
@@ -22,6 +27,55 @@ export const SKETCH_SHARE = 0.3
 const FALLBACK_FABRIC = { kind: 'fabric', name: 'Plain Canvas', pattern: 'weave', colors: ['#e9dcc3', '#d6c4a5', '#f4ecdc'], scale: 4 }
 
 export const EMPTY_STATE = { day: null, history: [], seq: 0 }
+
+/** The island's clock runs on this time zone, wherever the visitor is. */
+export const ISLAND_TIME_ZONE = 'Europe/London'
+export const WORK_HOURS = [8, 18]
+
+const islandFormat = new Intl.DateTimeFormat('en-GB', {
+  timeZone: ISLAND_TIME_ZONE,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+})
+
+/** The date (YYYY-MM-DD) and hour (with fractions) on the island right now. */
+export function islandNow(now = Date.now()) {
+  const p = Object.fromEntries(islandFormat.formatToParts(new Date(now)).map((x) => [x.type, x.value]))
+  return { date: `${p.year}-${p.month}-${p.day}`, hour: Number(p.hour) + Number(p.minute) / 60 }
+}
+
+/** How much of a day's work the clock says should be done by now. */
+export function clockDone(day, now = Date.now()) {
+  const { date, hour } = islandNow(now)
+  if (date < day.date) return 0
+  if (date > day.date) return day.needed
+  const [start, end] = WORK_HOURS
+  return Math.floor(day.needed * Math.min(1, Math.max(0, (hour - start) / (end - start))))
+}
+
+/**
+ * Bring today's challenge up to the clock. The clock's share of the work is credited the
+ * way the characters would have done it: the sketcher first (with the odd delivery), then
+ * the builder with the sketcher helping.
+ */
+export function catchUp(state, now = Date.now()) {
+  const { day } = state
+  if (!day || day.status !== 'active') return state
+  const target = clockDone(day, now)
+  const role = (job) => day.tasks.find((t) => t.job === job)?.who
+  let next = state
+  for (let unit = day.done; unit < target; unit++) {
+    const sketched = unit >= Math.ceil(day.needed * SKETCH_SHARE)
+    let who = unit % 5 === 4 ? role('fetch') : sketched && unit % 3 === 0 ? role('sketch') : sketched ? role('make') : role('sketch')
+    who ??= role('make') ?? role('sketch')
+    next = addWork(next, who, 1, now)
+  }
+  return next
+}
 
 /** Everyone who can be credited with work ('dev' is the testing buttons). */
 export const CAST_IDS = [...AGENTS.map((a) => a.id), ...SHIPS.map((s) => s.id)]
@@ -123,7 +177,8 @@ export function closeDay(day) {
 }
 
 /** Start a new day on `date` from `plan`, closing the current one into the history. */
-export function startDay(state, date, plan) {
+export function startDay(state, date, plan, now = Date.now()) {
+  state = catchUp(state, now) // a day from an earlier date is finished by the clock first
   const history = state.day ? [...state.history, closeDay(state.day)] : state.history
   return { day: createDay(date, history, state.seq, plan), history, seq: state.seq + 1 }
 }

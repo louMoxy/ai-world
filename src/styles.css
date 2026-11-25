@@ -634,3 +634,26 @@ body[data-look='toon'] .thought-dot { border: 2px solid #1d2433; }
 .about h3 { margin: 18px 0 6px; font-size: 15px; }
 .about ol, .about ul { padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 4px; }
 .about code { font-size: 12px; background: #eef1f5; padding: 1px 5px; border-radius: 4px; }
+
+/* ---------- Phones ---------- */
+@media (max-width: 640px) {
+  .title { top: 12px; left: 16px; }
+  .title h1 { font-size: 24px; }
+  .title p { display: none; }
+  .hints { display: none; } /* mouse instructions: touch works the same way without them */
+  .challenge { left: 12px; right: 12px; top: 56px; width: auto; max-height: 45vh; overflow-y: auto; }
+  .corner-tools { right: 12px; bottom: 12px; }
+  .corner-tools.beside-panel { display: none; }
+  .panel,
+  .panel.follow {
+    top: auto;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: auto;
+    max-height: 62vh;
+    overflow-y: auto;
+  }
+  .about { padding: 20px 18px; }
+  body:has(.panel) .challenge { display: none; } /* one card at a time on a small screen */
+}

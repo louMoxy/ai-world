@@ -142,6 +142,20 @@ Settings go in a `.env` file: copy `.env.example` to `.env`. It's never committe
 
 If the site is ever hosted as plain files with no server, it still works: the same day rules run in the browser and days are saved there instead. Days that were saved in a browser before the server existed are moved to the server automatically, once.
 
+## The island clock
+
+A day's work follows the island's clock (UK time, `ISLAND_TIME_ZONE` in `src/making/days.js`): sketching starts at 8am and the creation is finished by 6pm, even if nobody has the world open. Keeping the world open speeds it up, because every job the characters finish counts on top of the clock. A day is never left unfinished: when a new day starts, the old one is finished first.
+
+## Online
+
+The online copy is a plain static site on GitHub Pages, so it needs no server and costs nothing:
+
+1. Each morning the daily AI task writes the plan and reports, then runs `npm run island:publish`. That starts today's day in `data/making.json` (with the same rules as the server, in `server/island.js`), commits the `data` folder and pushes it to GitHub.
+2. The push runs `.github/workflows/publish-site.yml`, which builds the site with `npm run build:online` and publishes it. The build includes a copy of the days as `island.json`.
+3. Visitors' browsers load `island.json` and follow the island clock, so everyone sees the same island. Nothing a visitor does is saved.
+
+To try the online version locally: `npm run build:online`, then `npx vite preview --mode online`.
+
 ## The daily AI
 
 Once a day a **scheduled Claude Code task** ("AI World: plan the day and write the report", in the Scheduled section of the Claude app) plans the island's next making challenge and writes the reports for days that have ended. It runs on your Claude plan, so there's no API key and no extra bill. It runs at about 7:00 while the Claude app is open, or the next time the app opens.

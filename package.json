@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "ai:brief": "node scripts/ai-day.js brief",
-    "ai:check": "node scripts/ai-day.js check"
+    "ai:check": "node scripts/ai-day.js check",
+    "build:online": "vite build --mode online",
+    "island:publish": "node scripts/publish.js"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",

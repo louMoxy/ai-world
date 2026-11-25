@@ -20,6 +20,10 @@ export function About({ onClose }) {
           <li>When it's finished it goes in the Gallery, and it changes the island: prints stand on the pier, fabrics become bunting and the Gull's sail, and about once a week something new is built.</li>
           <li>Claude writes a report of the day for the Island Log.</li>
         </ol>
+        <p className="muted small">
+          The work follows the island's clock (UK time): sketching starts at 8am and it's finished by 6pm, whether anyone is watching
+          or not. Each morning the island's owner publishes the new day to this site.
+        </p>
 
         <h3>The AI part</h3>
         <p>
@@ -35,7 +39,8 @@ export function About({ onClose }) {
           <li><strong>three.js</strong> with <strong>React Three Fiber</strong> and <strong>drei</strong> for the 3D world</li>
           <li><strong>postprocessing</strong> and custom shaders for the six looks (toon outlines, pixel, blueprint, AI vision…)</li>
           <li><strong>zustand</strong> for shared state</li>
-          <li><strong>Vite</strong> to build and serve it, with a small <strong>Node</strong> server inside it that saves every day to <code>data/making.json</code></li>
+          <li><strong>Vite</strong> to build and serve it, with a small <strong>Node</strong> server inside it that saves every day to <code>data/making.json</code> while developing</li>
+          <li><strong>GitHub Pages</strong> for this online copy: plain files, rebuilt by <strong>GitHub Actions</strong> each time the day is published</li>
           <li><strong>Canvas 2D</strong> for the sketches and fabric patterns</li>
           <li>The browser's <strong>Web Speech API</strong> for reading thoughts aloud (nothing is sent anywhere)</li>
           <li><strong>Claude Code</strong> scheduled tasks for the daily plan and report</li>

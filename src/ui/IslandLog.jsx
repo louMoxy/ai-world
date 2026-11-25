@@ -41,7 +41,7 @@ export function IslandLog({ openId }) {
           <h2>Island Log</h2>
           <p className="muted">
             {days.length} {days.length === 1 ? 'day' : 'days'} · {made} {made === 1 ? 'creation' : 'creations'} ·{' '}
-            {storage === 'server' ? 'saved on the server' : 'saved in this browser'}
+            {storage === 'server' ? 'saved on the server' : storage === 'online' ? 'updated every morning' : 'saved in this browser'}
           </p>
         </div>
       </div>

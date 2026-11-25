@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { THEMES } from './designs'
 import { loadMaking, saveMaking, forgetMaking } from './storage'
-import { SKETCH_SHARE, EMPTY_STATE, nameOf, dateKey, addDays, samplePlan, needsNewDay, startDay, addWork, addVisit, isState } from './days'
+import { SKETCH_SHARE, EMPTY_STATE, nameOf, dateKey, addDays, samplePlan, needsNewDay, startDay, addWork, addVisit, catchUp, isState } from './days'
 
 export { NEEDED, SKETCH_SHARE, nameOf } from './days'
 
@@ -12,7 +12,15 @@ export { NEEDED, SKETCH_SHARE, nameOf } from './days'
  * This store asks it for the day, shows each finished job straight away, and tells the
  * server about it. If there's no server (the site hosted as plain files), the same
  * rules from days.js run here and the days are saved in this browser instead.
+ *
+ * ONLINE (the published site, built with `npm run build:online`): there's no server. The
+ * page reads island.json, a copy of data/making.json published each morning, and follows
+ * the island clock (catchUp in days.js), so every visitor sees the same island. Nothing a
+ * visitor's browser does is saved.
  */
+
+export const ONLINE = import.meta.env.MODE === 'online'
+const REFETCH_EVERY_MS = 10 * 60_000 // online: look for a newly published day
 
 const SYNC_EVERY_MS = 60_000 // picks up a new day at midnight, and work from other tabs
 
@@ -33,6 +41,12 @@ export const useMaking = create((set, get) => ({
   seq: 0, // how many days have been created
 
   async start() {
+    if (ONLINE) {
+      const state = await fetchPublished()
+      set({ ...pick(catchUp(state ?? EMPTY_STATE)), storage: 'online', ready: true, fetchedAt: Date.now() })
+      setInterval(() => get().sync(), SYNC_EVERY_MS)
+      return
+    }
     try {
       let state = await api('/api/making')
       state = await moveBrowserDaysToServer(state)
@@ -51,14 +65,26 @@ export const useMaking = create((set, get) => ({
   /** Catch up with the server (or roll over to a new day in browser mode). */
   async sync() {
     const { storage } = get()
+    if (storage === 'online') {
+      const before = pick(get())
+      let state = before
+      if (Date.now() - get().fetchedAt > REFETCH_EVERY_MS) {
+        state = (await fetchPublished()) ?? before
+        set({ fetchedAt: Date.now() })
+      }
+      const next = catchUp(state)
+      if (next !== before) set(pick(next))
+      return
+    }
     if (storage === 'server') {
       try {
         set(pick(await api('/api/making')))
       } catch {
         // Try again next time.
       }
-    } else if (storage === 'browser' && needsNewDay(get())) {
-      const state = startDay(get(), dateKey(), samplePlan(get().seq))
+    } else if (storage === 'browser') {
+      const state = needsNewDay(get()) ? startDay(get(), dateKey(), samplePlan(get().seq)) : catchUp(get())
+      if (state === get()) return
       saveMaking(pick(state))
       set(pick(state))
     }
@@ -66,6 +92,7 @@ export const useMaking = create((set, get) => ({
 
   /** Someone finished a job for today's challenge. */
   contribute(who, amount = 1) {
+    if (ONLINE) return // online, the clock does the work
     const before = get()
     const after = addWork(before, who, amount)
     if (after === before) return
@@ -81,6 +108,7 @@ export const useMaking = create((set, get) => ({
 
   /** Someone came by a place (see addVisit in days.js). */
   visit(who, place, kind, note) {
+    if (ONLINE) return
     const before = get()
     const after = addVisit(before, { who, place, kind, note })
     if (after === before) return
@@ -106,6 +134,18 @@ export const useMaking = create((set, get) => ({
     }
   },
 }))
+
+/** The published island (online only). */
+async function fetchPublished() {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}island.json`, { cache: 'no-cache' })
+    const state = await res.json()
+    return isState(state) ? pick(state) : null
+  } catch (e) {
+    console.warn('[island] Could not load the island:', e.message)
+    return null
+  }
+}
 
 /** Days saved in this browser before the server existed move to the server, once. */
 async function moveBrowserDaysToServer(serverState) {

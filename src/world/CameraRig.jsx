@@ -45,10 +45,31 @@ export function CameraRig() {
     c.object.position.add(before.sub(t).negate())
   }
 
-  useFrame((_, rawDt) => {
+  const shift = useRef(0)
+
+  /**
+   * On phones: a wider lens in portrait so more of the island fits, and while a panel
+   * covers the bottom of the screen, the view is nudged up so whoever you follow stays
+   * visible above it.
+   */
+  const fitSmallScreens = (camera, size, dt) => {
+    const fov = size.width < size.height ? 60 : 45
+    const want = size.width <= 640 && useWorld.getState().selected ? size.height * 0.24 : 0
+    shift.current += (want - shift.current) * Math.min(1, dt * 6)
+    if (Math.abs(shift.current - want) < 0.5) shift.current = want
+    const changed = camera.fov !== fov || (camera.view?.offsetY ?? 0) !== shift.current
+    if (!changed) return
+    camera.fov = fov
+    if (shift.current) camera.setViewOffset(size.width, size.height, 0, shift.current, size.width, size.height)
+    else camera.clearViewOffset()
+    camera.updateProjectionMatrix()
+  }
+
+  useFrame(({ camera, size }, rawDt) => {
     const c = controls.current
     if (!c) return
     const dt = Math.min(rawDt, 0.1)
+    fitSmallScreens(camera, size, dt)
     const sel = following()
     const f = follow.current
 

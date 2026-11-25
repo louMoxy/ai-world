@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import path from 'node:path'
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -23,8 +24,22 @@ export default defineConfig(({ mode }) => {
     },
   }
 
+  // `npm run build:online` makes the published site: plain files with no server, which
+  // read a copy of the saved days (island.json) and follow the island clock.
+  const online = mode === 'online'
+  const publishIsland = {
+    name: 'publish-island',
+    apply: 'build',
+    generateBundle() {
+      if (!online) return
+      const days = JSON.parse(fs.readFileSync(path.join(dataDir, 'making.json'), 'utf8'))
+      this.emitFile({ type: 'asset', fileName: 'island.json', source: JSON.stringify(days) })
+    },
+  }
+
   return {
-    plugins: [react(), islandServer],
+    base: online ? './' : '/',
+    plugins: [react(), islandServer, publishIsland],
     server: {
       port: 5173,
       watch: { ignored: ['**/data/**'] }, // saving the days shouldn't reload the page
