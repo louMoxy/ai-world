@@ -4,6 +4,7 @@ import { Html } from '@react-three/drei'
 import * as THREE from 'three'
 import { waveHeight } from '../world/terrain'
 import { useWorld, isThing } from '../store'
+import { Bubble } from '../minds/Bubble'
 import { getBrain } from '../brains'
 import { tracked } from '../world/tracking'
 import { WAYPOINTS, WAYPOINT_INFO, BERTHS, planRoute } from './navigation'
@@ -55,9 +56,11 @@ export function Ship({ ship }) {
   const hovered = useWorld((s) => isThing(s.hovered, 'ship', ship.id))
   const selected = useWorld((s) => isThing(s.selected, 'ship', ship.id))
   const speech = useWorld((s) => s.speech[ship.id])
+  const thought = useWorld((s) => s.thoughts[ship.id])
   const active = hovered || selected
 
   const startAction = (action) => {
+    if (action?.thought) useWorld.getState().think(ship.id, action.thought)
     const s = sim.current
     const { setStatus, say } = useWorld.getState()
 
@@ -221,9 +224,9 @@ export function Ship({ ship }) {
         <meshBasicMaterial color={ship.color} toneMapped={false} transparent opacity={0.8} />
       </mesh>
 
-      <Html position={[0, ship.variant === 'sail' ? 5.2 : 3.4, 0]} center zIndexRange={speech ? [9, 8] : [6, 0]} style={{ pointerEvents: 'none' }}>
+      <Html position={[0, ship.variant === 'sail' ? 5.2 : 3.4, 0]} center zIndexRange={speech || thought ? [9, 8] : [6, 0]} style={{ pointerEvents: 'none' }}>
         <div className="agent-tag" style={{ '--accent': ship.color }}>
-          {speech && <div className="bubble">{speech.length > 90 ? speech.slice(0, 87) + '…' : speech}</div>}
+          <Bubble speech={speech} thought={thought} />
           <div className={`nametag ${active ? 'active' : ''}`}>⚓ {ship.name}</div>
         </div>
       </Html>

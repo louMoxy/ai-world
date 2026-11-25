@@ -6,13 +6,14 @@ import { heightAt } from '../world/terrain'
 import { OBSTACLES } from '../world/layout'
 import { STATIONS, getStation } from '../stations/stations'
 import { useWorld, isThing } from '../store'
+import { Bubble } from '../minds/Bubble'
 import { getBrain } from '../brains'
 import { tracked } from '../world/tracking'
 import { getWorkstation } from '../making/workstations'
 import { useMaking, wornOutfit } from '../making/store'
 import { Outfit } from '../making/Outfit'
 
-const SPEED = 2.2
+const SPEED = 2.2 // default walking speed; each personality can set its own
 const STAND_RADIUS = 3.6 // how far from a station's centre a character stops
 const BODY_RADIUS = 0.4
 const MAX_WALK_SECONDS = 30
@@ -24,6 +25,7 @@ export function Agent({ agent }) {
   const group = useRef()
   const body = useRef()
   const brain = getBrain(agent.id)
+  const speed = agent.behaviour?.speed ?? SPEED
 
   const sim = useRef({
     x: agent.start[0],
@@ -43,11 +45,13 @@ export function Agent({ agent }) {
   const hovered = useWorld((s) => isThing(s.hovered, 'agent', agent.id))
   const selected = useWorld((s) => isThing(s.selected, 'agent', agent.id))
   const speech = useWorld((s) => s.speech[agent.id])
+  const thought = useWorld((s) => s.thoughts[agent.id])
   const active = hovered || selected
   const outfit = useMaking((s) => wornOutfit(s, agent.id))
 
   // Turn a brain's Action into something the character can carry out.
   const startAction = (action) => {
+    if (action?.thought) useWorld.getState().think(agent.id, action.thought)
     const s = sim.current
     const { setStatus } = useWorld.getState()
     const here = getStation(s.currentStationId)
@@ -164,8 +168,8 @@ export function Agent({ agent }) {
             vx /= len
             vz /= len
           }
-          s.x += vx * SPEED * dt
-          s.z += vz * SPEED * dt
+          s.x += vx * speed * dt
+          s.z += vz * speed * dt
           desiredHeading = Math.atan2(vx, vz)
           moving = true
         }
@@ -250,9 +254,9 @@ export function Agent({ agent }) {
         <meshBasicMaterial color={agent.color} toneMapped={false} />
       </mesh>
 
-      <Html position={[0, 2.75, 0]} center zIndexRange={speech ? [9, 8] : [6, 0]} style={{ pointerEvents: 'none' }}>
+      <Html position={[0, 2.75, 0]} center zIndexRange={speech || thought ? [9, 8] : [6, 0]} style={{ pointerEvents: 'none' }}>
         <div className="agent-tag" style={{ '--accent': agent.color }}>
-          {speech && <div className="bubble">{speech.length > 90 ? speech.slice(0, 87) + '…' : speech}</div>}
+          <Bubble speech={speech} thought={thought} />
           <div className={`nametag ${active ? 'active' : ''}`}>{agent.name}</div>
         </div>
       </Html>

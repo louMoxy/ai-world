@@ -24,6 +24,7 @@ import { MaterialSwap } from './looks/MaterialSwap'
 import { LookEffects } from './looks/LookEffects'
 import { MakingWorld } from './making/MakingWorld'
 import { ChallengeCard } from './ui/ChallengeCard'
+import { Minds } from './minds/Minds'
 
 /** Tells the loading screen to fade once a couple of frames have been drawn. */
 function ReadySignal() {
@@ -80,6 +81,7 @@ export default function App() {
       </Canvas>
       <Overlay />
       <ChallengeCard />
+      <Minds />
       <InfoPanel />
       <LookSwitcher />
       <LoadingScreen />

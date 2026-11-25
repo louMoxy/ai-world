@@ -27,10 +27,10 @@ src/
     Station.jsx         Station building, hover highlight and label
     dock.js             Harbour position and pier measurements
   agents/
-    agents.js           Character list: names, colours and personalities
+    agents.js           Characters: names, colours, personalities, behaviour, voices and thoughts
     Agent.jsx           Movement, obstacle avoidance and look
   ships/
-    ships.js            Ship list: names, colours, berths and personalities
+    ships.js            Ships: names, colours, berths, personality, voice and thoughts
     navigation.js       Sea waypoints, berths and route planning
     Ship.jsx            Sailing, mooring, bobbing on the waves, and the boat models
   brains/
@@ -38,6 +38,10 @@ src/
     shipBrain.js        Placeholder ship brain for when the Gull is off duty
     aiBrain.js          Example of where a real AI model plugs in (not used yet)
     index.js            Picks which brain each character and ship uses
+  minds/
+    mind.js             Picks a thought for a situation and fills in the details
+    Minds.jsx           Thoughts about the day's events, and reading thoughts aloud
+    Bubble.jsx          Speech and thought bubbles
   looks/
     looks.js            Look presets: mood colours, materials and filters for each
     LookEffects.jsx     Full-screen filters; all built at load so switching is instant
@@ -74,6 +78,20 @@ A look changes how the whole world is drawn. There are six: Default, Toon, Night
 - **effects**: full-screen filters (`outline`, `bloom`, `pixel`, `blueprint`, `vision`, `glow`). New filters go in `LookEffects.jsx`.
 
 Every look is compiled behind the loading screen, so switching never pauses. The labels and speech bubbles are HTML, so each look restyles them in `styles.css` (`body[data-look=...]`).
+
+## Personalities and thoughts
+
+Each character and ship has its own personality in `src/agents/agents.js` and `src/ships/ships.js`. It changes what they do as well as what they think:
+
+- **Nova** is bubbly and easily distracted: she walks fast, works in short bursts, takes more breaks (at the Gallery, Observatory or Garden Gate) and thinks in colours.
+- **Pip** is practical and focused: slower, longer working turns, hardly any breaks (and those at the Workshop), counts things and wants tea.
+- **The Gull** is a cheerful old sailboat who talks to seagulls and takes every delivery seriously.
+
+Their **thoughts** appear in lavender thought bubbles, separate from things they say out loud. Thoughts depend on the situation (walking to work, sketching, building, helping, on a break, arriving somewhere, off duty) and on the day's events (a new day, the sketch being finished, the creation being done), and they mention real details like today's project and who is building it.
+
+Follow someone to see what has been on their mind lately. Turn on **🔈 Hear thoughts** to have their thoughts and sayings read aloud while you follow them. It uses your browser's built-in voices (free, nothing is sent anywhere), so how they sound depends on the voices your computer has.
+
+To change a personality, edit its `behaviour` numbers or add lines to its `thoughts`.
 
 ## Making things
 

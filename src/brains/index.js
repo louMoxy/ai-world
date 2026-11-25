@@ -17,7 +17,7 @@ const brains = new Map([
 ])
 
 // Every brain also works on the day's making challenge (see src/making/makerBrain.js).
-for (const agent of AGENTS) brains.set(agent.id, withMaking(brains.get(agent.id), agent.id, 'agent'))
-for (const ship of SHIPS) brains.set(ship.id, withMaking(brains.get(ship.id), ship.id, 'ship'))
+for (const agent of AGENTS) brains.set(agent.id, withMaking(brains.get(agent.id), agent, 'agent'))
+for (const ship of SHIPS) brains.set(ship.id, withMaking(brains.get(ship.id), ship, 'ship'))
 
 export const getBrain = (id) => brains.get(id)

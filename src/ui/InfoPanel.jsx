@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useWorld } from '../store'
 import { getStation } from '../stations/stations'
 import { AGENTS, getAgent } from '../agents/agents'
@@ -7,6 +7,7 @@ import { WAYPOINT_INFO } from '../ships/navigation'
 import { getWorkstation } from '../making/workstations'
 import { useMaking, jobNow, wornOutfit, allDays, progressOf } from '../making/store'
 import { IslandLog } from './IslandLog'
+import { voiceAvailable } from '../minds/Minds'
 
 /** Everyone you can follow, in order. */
 const CAST = [...AGENTS.map((a) => ({ type: 'agent', id: a.id })), ...SHIPS.map((s) => ({ type: 'ship', id: s.id }))]
@@ -88,6 +89,13 @@ function FollowPanel({ type, id }) {
         </div>
       </div>
 
+      {entity.personality && (
+        <p className="personality">
+          {entity.personality}
+          {entity.likes && <span className="muted"> Likes {listOf(entity.likes)}.</span>}
+        </p>
+      )}
+
       <div className="status-line">
         <span className="status on" /> {status ?? 'Looking around'}
       </div>
@@ -119,6 +127,8 @@ function FollowPanel({ type, id }) {
         Has helped make {helpedMake} {helpedMake === 1 ? 'creation' : 'creations'}.
       </p>
 
+      <MindFeed id={id} />
+
       <div className="follow-actions">
         <button onClick={() => follow(next)}>Follow {(getAgent(next.id) ?? getShip(next.id)).name} ›</button>
         <button className="secondary" onClick={() => useWorld.getState().clearSelection()}>
@@ -126,6 +136,59 @@ function FollowPanel({ type, id }) {
         </button>
       </div>
       <p className="muted small">Drag to look around them, scroll to zoom. Esc stops following.</p>
+    </div>
+  )
+}
+
+const listOf = (items) => (items.length > 1 ? `${items.slice(0, -1).join(', ')} and ${items.at(-1)}` : items[0])
+
+function ago(at) {
+  const s = Math.round((Date.now() - at) / 1000)
+  if (s < 20) return 'just now'
+  if (s < 60) return `${s}s ago`
+  const m = Math.round(s / 60)
+  return m < 60 ? `${m} min ago` : 'a while ago'
+}
+
+/** Their recent thoughts and sayings, newest first, and the switch to hear them. */
+function MindFeed({ id }) {
+  const log = useWorld((s) => s.mindLog[id])
+  const voice = useWorld((s) => s.voice)
+  const [, tick] = useState(0)
+  useEffect(() => {
+    const t = setInterval(() => tick((n) => n + 1), 15000) // keep "2 min ago" fresh
+    return () => clearInterval(t)
+  }, [])
+
+  return (
+    <div className="mind">
+      <div className="mind-head">
+        <h4>On their mind</h4>
+        {voiceAvailable && (
+          <button
+            className={`voice ${voice ? 'on' : ''}`}
+            aria-pressed={voice}
+            onClick={() => useWorld.getState().setVoice(!voice)}
+            title="Read their thoughts out loud while you follow them"
+          >
+            {voice ? '🔊 Hearing thoughts' : '🔈 Hear thoughts'}
+          </button>
+        )}
+      </div>
+      {log?.length ? (
+        <ul>
+          {log.slice(0, 5).map((m) => (
+            <li key={m.at + m.text} className={m.kind}>
+              <span aria-label={m.kind === 'thought' ? 'Thought' : 'Said'}>{m.kind === 'thought' ? '💭' : '💬'}</span>
+              <span>
+                {m.text} <span className="muted">· {ago(m.at)}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted small">Nothing yet. Give them a moment…</p>
+      )}
     </div>
   )
 }
