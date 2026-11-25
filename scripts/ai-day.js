@@ -14,6 +14,7 @@ import { runnerImport } from 'vite'
 
 const root = path.resolve(import.meta.dirname, '..')
 const load = async (file) => (await runnerImport(path.join(root, file))).module
+const { ADDITION_KINDS, ADDITION_PLACES } = await load('src/world/growth.js')
 const [{ dateKey, addDays, nameOf, NEEDED }, { checkPlan, checkReport, WAYPOINT_IDS }, designs, { SAMPLE_DAYS }, { AGENTS }, { SHIPS }] =
   await Promise.all([
     load('src/making/days.js'),
@@ -85,7 +86,8 @@ function brief() {
     if (ds.kind === 'print') what = `3D print, ${ds.parts.length} parts`
     if (ds.kind === 'outfit') what = `outfit for ${nameOf(ds.wearer)}: ${ds.hat.style} hat ${ds.hat.color}, ${ds.neck.style}${ds.neck.fabric ? ` of ${ds.neck.fabric.name}` : ''}`
     const team = Object.entries(d.credits ?? {}).filter(([who]) => who !== 'dev').map(([who, n]) => `${nameOf(who)} ${n}`).join(', ')
-    return `- ${d.id} · ${d.date} · "${d.title}" (${what}) · ${d.status}, ${Math.round((d.done / d.needed) * 100)}% · planned by ${d.plannedBy ?? 'sample'}${team ? ` · turns: ${team}` : ''}`
+    const extra = d.addition ? ` · added ${d.addition.kind} near ${d.addition.near}` : ''
+    return `- ${d.id} · ${d.date} · "${d.title}" (${what})${extra} · ${d.status}, ${Math.round((d.done / d.needed) * 100)}% · planned by ${d.plannedBy ?? 'sample'}${team ? ` · turns: ${team}` : ''}`
   }
 
   const out = []
@@ -101,6 +103,15 @@ function brief() {
       out.push(`${i + 2}. Write the end-of-day report for day ${d.id} ("${d.title}"). Write it to data/ai/reports/${d.id}.json`),
     )
   else out.push('2. Reports: none needed.')
+  // About once a week, the plan also adds something new to the island.
+  const lastAddition = [...days].reverse().find((d) => d.addition)
+  const additionDue = !planExists && (!lastAddition || lastAddition.date <= addDays(planDate, -7))
+  if (additionDue)
+    out.push(
+      '',
+      `This plan should also include an "addition": something new for the island, built when the day's challenge is finished (see the rules). ${lastAddition ? `The last one was ${lastAddition.addition.kind} near ${lastAddition.addition.near} on ${lastAddition.date}.` : 'It will be the first one.'}`,
+    )
+  else if (!planExists) out.push('', 'No "addition" in this plan: the island had one in the last week.')
   out.push('', 'Check every file with: npm run ai:check -- <file>   and fix it until it says OK.', '')
 
   out.push('## Recent days (oldest first)', '')
@@ -125,6 +136,7 @@ function brief() {
     `- fabric: pattern one of ${designs.PATTERNS.join(', ')}; colors: 2–4 '#rrggbb'; scale 1–8.`,
     `- outfit: wearer one of ${designs.WEARERS.join(', ')}; hat.style one of ${designs.HATS.join(', ')} with hat.color '#rrggbb'; neck.style one of ${designs.NECKS.join(', ')}; neck.fabric is a fabric design, or 'latest-fabric' to use the newest finished fabric (good for building on earlier days).`,
     `- print: up to ${designs.MAX_PARTS} parts. Shapes: box {size:[w,h,d]}, cylinder {radius, height, radiusTop?}, cone {radius, height}, sphere {radius}, torus {radius, tube}. Each part: at [x,y,z] (its centre, metres), optional rot [x,y,z] degrees, color '#rrggbb'. y=0 is the print bed; the object must fit in ${designs.PRINT_BOUNDS.width} wide × ${designs.PRINT_BOUNDS.height} high × ${designs.PRINT_BOUNDS.depth} deep, centred on x=0,z=0. Parts must not go below the bed. Optional basedOn: 'latest-print' to improve the newest print.`,
+    `- addition (only when the brief asks for one): { kind: one of ${Object.keys(ADDITION_KINDS).join(', ')}; near: one of ${ADDITION_PLACES.join(', ')} (hub is The Spire); color: '#rrggbb' }. It appears on the island when the day is finished, and stays. Pick something that suits the place and the day, and mention it in the brief.`,
     '- Optional plannedBy: a short name for who planned it (default "Claude").',
     `- A day takes ${NEEDED} turns of work; aim for something the cast can finish in a day.`,
     '',

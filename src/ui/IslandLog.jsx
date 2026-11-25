@@ -6,6 +6,7 @@ import { sketchStrokes, sketchImage } from '../making/sketch'
 import { AGENTS } from '../agents/agents'
 import { SHIPS } from '../ships/ships'
 import { follow } from './ChallengeCard'
+import { describeAddition } from '../world/growth'
 
 const isCast = (id) => AGENTS.some((a) => a.id === id) || SHIPS.some((s) => s.id === id)
 
@@ -102,6 +103,11 @@ function LogEntry({ day, onOpen }) {
 
       <h4>What was made</h4>
       <DesignSummary design={day.design} />
+      {day.addition && (
+        <p className="addition">
+          🌱 {day.status === 'finished' ? 'Also added to the island' : 'When it’s finished, the island gets'}: {describeAddition(day.addition)}.
+        </p>
+      )}
 
       <h4>{day.status === 'active' ? 'Progress' : 'Report'}</h4>
       {day.aiReport && (

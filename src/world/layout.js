@@ -3,6 +3,10 @@ import { mulberry32 } from './noise'
 import { STATIONS } from '../stations/stations'
 import { toDock, PIER } from './dock'
 import { WORKSTATIONS, GALLERY_SLOTS } from '../making/workstations'
+import { GROWTH_OBSTACLES } from './growth'
+
+/** Keep the bunting poles and the plots for new things clear of trees and rocks. */
+const growthClear = (t) => GROWTH_OBSTACLES.every((g) => Math.hypot(g.x - t.x, g.z - t.z) > g.r + 1.1)
 
 /** Place things randomly (but the same every load) on suitable ground. */
 function scatter({ count, seed, minHeight, maxHeight, keepOut, spacing, accept }) {
@@ -38,7 +42,9 @@ export const TREES = scatter({
   keepOut: 5.5,
   spacing: 1.8,
   accept: (r, rng) => r > 8 && (r > 17 || rng() < 0.25),
-}).map((t) => ({ ...t, kind: t.variant < 0.6 ? 'pine' : 'round' }))
+})
+  .filter(growthClear)
+  .map((t) => ({ ...t, kind: t.variant < 0.6 ? 'pine' : 'round' }))
 
 export const ROCKS = scatter({
   count: 30,
@@ -47,7 +53,7 @@ export const ROCKS = scatter({
   maxHeight: 8,
   keepOut: 4.5,
   spacing: 1.4,
-})
+}).filter(growthClear)
 
 /** Circles that characters walk around. */
 export const OBSTACLES = [
@@ -56,4 +62,5 @@ export const OBSTACLES = [
   ...ROCKS.map((r) => ({ x: r.x, z: r.z, r: 0.5 * r.scale })),
   ...WORKSTATIONS.map((w) => ({ x: w.x, z: w.z, r: w.r })),
   ...GALLERY_SLOTS.map((g) => ({ x: g.x, z: g.z, r: g.r })),
+  ...GROWTH_OBSTACLES,
 ]

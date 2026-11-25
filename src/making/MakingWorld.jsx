@@ -10,6 +10,7 @@ import { sketchStrokes, drawSketch, SKETCH_SIZE } from './sketch'
 import { fabricTexture } from './fabric'
 import { PrintedObject } from './PrintedObject'
 import { Outfit } from './Outfit'
+import { Growth } from '../world/IslandGrowth'
 
 const WOOD = '#8a5a35'
 const DARK_WOOD = '#5c3b22'
@@ -30,12 +31,13 @@ export function MakingWorld() {
       <Mannequin ws={getWorkstation('mannequin')} />
       <Loom ws={getWorkstation('loom')} />
       <GalleryDisplays />
+      <Growth />
     </>
   )
 }
 
 /** Click handlers that open today's page in the Island Log. */
-function openLogProps(dayId) {
+export function openLogProps(dayId) {
   return {
     onPointerOver: (e) => {
       e.stopPropagation()

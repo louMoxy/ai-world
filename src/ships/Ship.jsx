@@ -8,6 +8,9 @@ import { Bubble } from '../minds/Bubble'
 import { getBrain } from '../brains'
 import { tracked } from '../world/tracking'
 import { WAYPOINTS, WAYPOINT_INFO, BERTHS, planRoute } from './navigation'
+import { useMaking, allDays } from '../making/store'
+import { fabricTexture } from '../making/fabric'
+import { sailFabric } from '../world/growth'
 
 const MAX_SPEED = 3.4
 const TURN_RATE = 1.1 // radians per second
@@ -269,10 +272,7 @@ function ShipModel({ ship, active }) {
             <cylinderGeometry args={[0.05, 0.07, 3.3, 5]} />
             <meshStandardMaterial color="#4a3020" />
           </mesh>
-          <mesh position={[0, 2.2, -0.45]} castShadow>
-            <boxGeometry args={[0.04, 2.2, 1.4]} />
-            <meshStandardMaterial color="#fbf6ec" flatShading />
-          </mesh>
+          <Sail />
           <mesh position={[0, 1.55, -0.45]}>
             <boxGeometry args={[0.05, 0.25, 1.42]} />
             <meshStandardMaterial color={ship.color} flatShading />
@@ -307,5 +307,17 @@ function ShipModel({ ship, active }) {
         </>
       )}
     </>
+  )
+}
+
+/** The sail: plain canvas, or the newest fabric the island has woven. */
+function Sail() {
+  const fabric = useMaking((s) => sailFabric(allDays(s)))
+  const map = fabric ? fabricTexture(fabric) : null
+  return (
+    <mesh position={[0, 2.2, -0.45]} castShadow>
+      <boxGeometry args={[0.04, 2.2, 1.4]} />
+      <meshStandardMaterial key={map ? map.uuid : 'plain'} color={map ? '#ffffff' : '#fbf6ec'} map={map} flatShading />
+    </mesh>
   )
 }

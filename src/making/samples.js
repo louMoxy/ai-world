@@ -11,6 +11,7 @@
  *     job 'gather' -> works at a station (research, picking colours…), for a bigger crew
  *     job 'fetch'  -> a ship sails to a waypoint and brings materials back to the harbour
  *   activity is what they're shown doing; prep (optional) is shown while the sketch is drawn.
+ *   addition (optional): something added to the island when the day is finished (see src/world/growth.js).
  */
 
 const ship = (cargo) => ({
@@ -51,6 +52,7 @@ export const SAMPLE_DAYS = [
     title: 'Harbour Lantern',
     brief: 'Print a lantern to light the harbour at night: a sturdy base, glass all round, and a red roof with a ring to hang it by.',
     notes: ['Glass on all four sides', 'Red roof, like the boats', 'Ring on top for hanging'],
+    addition: { kind: 'lamp', near: 'gallery', color: '#ffd166' },
     design: {
       kind: 'print',
       name: 'Harbour Lantern',
@@ -79,6 +81,7 @@ export const SAMPLE_DAYS = [
     title: 'Sunset Stripes',
     brief: 'A bold striped cloth in sunset colours: orange, coral and gold, with a deep sea-blue stripe running through.',
     notes: ['Sunset over the west waypoint', 'Wide stripes, bold colours', 'Warm enough for a cape'],
+    addition: { kind: 'bench', near: 'garden', color: '#e76f51' },
     design: { kind: 'fabric', name: 'Sunset Stripes', pattern: 'stripes', colors: ['#f4a261', '#e76f51', '#ffd166', '#264653'], scale: 3 },
     tasks: [
       { who: 'pip', job: 'sketch', at: 'easel', activity: 'Drawing the stripes', lines: ['More orange!', 'Rulers make straight stripes.'] },

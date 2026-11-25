@@ -1,6 +1,7 @@
 import { THEMES, validateDesign } from './designs'
 import { AGENTS } from '../agents/agents'
 import { SHIPS } from '../ships/ships'
+import { ADDITION_KINDS, ADDITION_PLACES } from '../world/growth'
 
 /**
  * Checks for what the daily AI writes (stage 3). The AI never changes the world directly:
@@ -9,6 +10,7 @@ import { SHIPS } from '../ships/ships'
  *
  *   data/ai/plans/<YYYY-MM-DD>.json   a day plan (same shape as src/making/samples.js),
  *                                     plus optional `thoughts`: { nova: [..], pip: [..], gull: [..] }
+ *                                     and optional `addition`: { kind, near, color } (about once a week)
  *   data/ai/reports/<day id>.json     { report: "…" } the end-of-day report for a day
  */
 
@@ -74,6 +76,14 @@ export function checkPlan(p) {
     else thoughts = p.thoughts
   }
 
+  let addition
+  if (p.addition !== undefined && p.addition !== null) {
+    const a = p.addition
+    if (!a || !ADDITION_KINDS[a.kind] || !ADDITION_PLACES.includes(a.near) || !/^#[0-9a-f]{6}$/i.test(a.color ?? ''))
+      errors.push(`addition: { kind: ${Object.keys(ADDITION_KINDS).join('|')}, near: ${ADDITION_PLACES.join('|')}, color: '#rrggbb' }`)
+    else addition = { kind: a.kind, near: a.near, color: a.color }
+  }
+
   if (errors.length) return { ok: false, errors }
   const clean = (t) => ({
     who: t.who, job: t.job, at: t.at, activity: t.activity.trim(),
@@ -93,6 +103,7 @@ export function checkPlan(p) {
       ...(p.basedOn ? { basedOn: p.basedOn } : {}),
       tasks: tasks.map(clean),
       ...(thoughts ? { thoughts } : {}),
+      ...(addition ? { addition } : {}),
     },
   }
 }

@@ -22,6 +22,8 @@ src/
   world/                Island terrain, water, sky, trees, rocks, clouds, camera
     terrain.js          heightAt(x, z), used by everything that stands on the ground
     layout.js           Where trees and rocks go; obstacles for characters
+    growth.js           How the island grows: where finished things and additions go
+    IslandGrowth.jsx    Prints on the pier, bunting, the Gull's sail and the additions
   stations/
     stations.js         Station list: edit names, colours and positions here
     Station.jsx         Station building, hover highlight and label
@@ -109,6 +111,16 @@ Every day the island takes on one making challenge: a **3D print**, a **fabric**
 4. When it's finished it goes to the **Gallery**. Fabrics hang as banners, prints stand on plinths, and outfits are worn by the character they were made for.
 
 Later days build on earlier ones: an outfit uses the newest fabric, and a print can improve an earlier one.
+
+### The island grows
+
+Finished things don't only go to the Gallery; they change the island:
+
+- every **print** gets a small copy on the pier (newest first, 8 spots);
+- every **fabric** strings a line of **bunting** between two places (8 routes, filled in order), and the newest fabric becomes the **Gull's sail**;
+- about once a week a day also has an **addition**: a bench, flower bed, lamp post, signpost, bird bath or beehive near one of the stations, built when the day is finished. The daily AI chooses it (the brief tells it when one is due).
+
+Additions go on fixed plots around the stations (`growth.js`), so they never land in a tree or in someone's path. Everything is worked out again from the saved days each time, so nothing extra needs saving. Click any of it to open its day in the Island Log.
 
 The **Island Log** (on the challenge card, or click any workstation or Gallery piece) keeps every day: its sketch (click to download it as a PNG), the design, who did what, and the end-of-day report.
 

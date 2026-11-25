@@ -561,3 +561,10 @@ body[data-look='toon'] .thought-dot { border: 2px solid #1d2433; }
   padding-left: 10px;
   white-space: pre-line;
 }
+
+/* Something the day adds to the island */
+.addition {
+  background: #eef8ec;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
