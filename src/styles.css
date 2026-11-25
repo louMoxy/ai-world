@@ -554,3 +554,10 @@ body[data-look='toon'] .thought-dot { border: 2px solid #1d2433; }
 .mind ul { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .mind li { display: grid; grid-template-columns: 18px 1fr; gap: 4px; font-size: 13px; line-height: 1.4; }
 .mind li.thought > span:last-child { font-style: italic; }
+
+/* The daily AI's end-of-day report in the Island Log */
+.ai-report {
+  border-left: 3px solid #b8a6f0;
+  padding-left: 10px;
+  white-space: pre-line;
+}

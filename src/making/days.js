@@ -80,6 +80,7 @@ export function createDay(date, history, seq, plan) {
     basedOn,
     sketcher: nameOf(plan.tasks.find((t) => t.job === 'sketch')?.who),
     plannedBy: plan.plannedBy ?? 'sample',
+    thoughts: plan.thoughts ?? null,
     done: 0,
     needed: NEEDED,
     credits: {},

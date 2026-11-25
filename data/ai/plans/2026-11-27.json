@@ -1,0 +1,43 @@
+{
+  "theme": "fabric",
+  "title": "Lighthouse Stripes",
+  "brief": "Weave a bold striped cloth in lighthouse colours: cherry red, sea-foam white and a band of deep night blue, bright enough to spot from any boat.",
+  "notes": ["Red and white, like a lighthouse", "A thin night-blue band", "Bold stripes: seen from the sea!"],
+  "design": {
+    "kind": "fabric",
+    "name": "Lighthouse Stripes",
+    "pattern": "stripes",
+    "colors": ["#e63946", "#f1faee", "#3d405b"],
+    "scale": 3
+  },
+  "tasks": [
+    {
+      "who": "nova",
+      "job": "sketch",
+      "at": "easel",
+      "activity": "Sketching the stripes",
+      "lines": ["Red, white, red, white… blue!", "Stripes make everything happy."]
+    },
+    {
+      "who": "pip",
+      "job": "make",
+      "at": "loom",
+      "activity": "Weaving the striped cloth",
+      "prep": "Counting threads for each stripe",
+      "lines": ["Twelve red, twelve white. Good.", "Steady shuttle, straight stripes."]
+    },
+    {
+      "who": "gull",
+      "job": "fetch",
+      "at": "s",
+      "activity": "Fetching red and white yarn",
+      "lines": ["Yarn aboard, bone dry!", "Following the lighthouse home."]
+    }
+  ],
+  "thoughts": {
+    "nova": ["The lantern looked so cosy last night. Now I want stripes to match!", "A thin blue stripe is like the sky just after sunset. Perfect.", "Maybe Pip finally gets an outfit from this one…"],
+    "pip": ["Stripes are all about counting. I like counting.", "If the stripes drift, everyone will see it. They won't drift.", "Tea first, then the loom."],
+    "gull": ["Red and white yarn! Very nautical. The seagulls approve.", "A good southerly breeze today. Perfect for cargo.", "Must keep the white yarn out of the spray."]
+  },
+  "plannedBy": "Claude"
+}

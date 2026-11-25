@@ -48,6 +48,7 @@ src/
     effects.js          Custom filters: ink outlines, posterize, blueprint, AI vision
     MaterialSwap.jsx    Swaps every surface to cartoon shading for the Toon look
   making/
+    aiPlans.js          Checks for the plans and reports the daily AI writes
     designs.js          Design formats (print, fabric, outfit) and the limits every design is checked against
     samples.js          Hand-written days, used until the AI writes them
     days.js             The rules of a day (shared by the server and the browser)
@@ -61,11 +62,16 @@ src/
   ui/                   Overlay, follow and station panel, look switcher, challenge card, Island Log, loading screen
 server/
   makingApi.js          The island's server: saves the days, starts new ones, takes in work
-  planner.js            Plans each new day (where the AI goes in stage 3)
+  planner.js            Plans each new day: the daily AI's plan, or a sample
+  inbox.js              Reads what the daily AI left in data/ai/
   budget.js             Daily AI spending ledger (data/spend.json)
   jsonFile.js           Safe saving of JSON files
 data/
   making.json           Every day the island has had (kept in git)
+  ai/plans/             The daily AI's plans, one per date
+  ai/reports/           The daily AI's end-of-day reports, one per day
+scripts/
+  ai-day.js             The daily AI's helper: npm run ai:brief and npm run ai:check
 .env.example            Settings for the server; copy to .env (never committed)
 ```
 
@@ -123,13 +129,34 @@ Settings go in a `.env` file: copy `.env.example` to `.env`. It's never committe
 
 If the site is ever hosted as plain files with no server, it still works: the same day rules run in the browser and days are saved there instead. Days that were saved in a browser before the server existed are moved to the server automatically, once.
 
+## The daily AI
+
+Once a day a **scheduled Claude Code task** ("AI World: plan the day and write the report", in the Scheduled section of the Claude app) plans the island's next making challenge and writes the reports for days that have ended. It runs on your Claude plan, so there's no API key and no extra bill. It runs at about 7:00 while the Claude app is open, or the next time the app opens.
+
+It never changes the code or the saved days. It only writes small files:
+
+- `data/ai/plans/<date>.json`: the plan for that date, in the same shape as `samples.js`, plus a few `thoughts` for each character about the project (mixed into their usual thoughts while they work on it).
+- `data/ai/reports/<day id>.json`: `{ "report": "…" }`, shown in the Island Log above the automatic report.
+
+The server reads them and checks them (`src/making/aiPlans.js`) the same way every time. A plan that fails the checks is ignored and a hand-written sample day is used instead, so the island always has a day. If today started with a sample because the plan arrived late, the server switches to the AI's plan as long as nobody has started work yet.
+
+To see what the task sees, or to check a file by hand:
+
+```powershell
+npm run ai:brief
+```
+
+```powershell
+npm run ai:check -- data/ai/plans/2026-11-27.json
+```
+
 ## Adding AI later
 
 Each character's and ship's behaviour comes from a **brain** with one method, `decide(context)`, which returns the next action. Characters can `walkTo` a station or workstation, `work`, `idle`, or `say` something. Ships can `sailTo` a waypoint, `dock` at the harbour, `idle`, or `say` something. Any action can carry a `status`, which is what the follow panel and challenge card show.
 
 `src/making/makerBrain.js` wraps each brain so it works on the day's challenge. When a character has no job, its own brain decides.
 
-There is no chat: the plan is one AI call a day to write the challenge and one to write the report, which keeps the cost very low.
+There is no chat: the daily AI (above) writes the challenge and the report once a day, which keeps the cost very low. If you'd rather not depend on the Claude app being open, `server/planner.js` is where a direct API call would go instead (an API key in `.env`, with the daily budget in `server/budget.js`).
 
 Ships sail between 8 compass waypoints around the island (North, North-East, …), and each ship has its own berth at the pier.
 

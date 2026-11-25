@@ -4,7 +4,7 @@ import { useMaking, sketchProgress } from '../making/store'
 import { thoughtContext } from '../making/makerBrain'
 import { AGENTS } from '../agents/agents'
 import { SHIPS } from '../ships/ships'
-import { think, personOf } from './mind'
+import { think, personOf, setDayThoughts } from './mind'
 
 const EVERYONE = [...AGENTS, ...SHIPS].map((p) => p.id)
 
@@ -25,6 +25,7 @@ function everyoneThinks(situation, delay = 0) {
  */
 export function Minds() {
   useDayReactions()
+  useDayThoughts()
   useVoice()
   return null
 }
@@ -45,6 +46,14 @@ function useDayReactions() {
         if (before.day.status === 'active' && now.day.status === 'finished') everyoneThinks('finished', 5000)
       }
     })
+  }, [])
+}
+
+/** Keep today's AI-written thoughts (if any) in the thought engine. */
+function useDayThoughts() {
+  useEffect(() => {
+    setDayThoughts(useMaking.getState().day?.thoughts)
+    return useMaking.subscribe((s) => setDayThoughts(s.day?.thoughts))
   }, [])
 }
 

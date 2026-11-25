@@ -203,7 +203,8 @@
     },
     "status": "finished",
     "finishedAt": 1795539013301,
-    "report": "Harbour Lantern is finished! Nova drew the plans, Pip did the printing The ships made 2 deliveries. It now stands in the Gallery."
+    "report": "Harbour Lantern is finished! Nova drew the plans, Pip did the printing The ships made 2 deliveries. It now stands in the Gallery.",
+    "aiReport": "The Harbour Lantern is finished and glowing in the Gallery! A sturdy base, warm glass on all four sides, a red roof like the boats and a little ring on top to hang it by.\n\nNova drew the plans in 14 turns, humming and deciding very quickly that the roof had to be pointy. Pip matched her with 14 turns at the printer, laying it down layer by layer and quietly pleased the nozzle never clogged once. That called for tea.\n\nThe Gull made 2 deliveries of red filament, both perfectly dry, and came home to the harbour proudly, as if she'd lit the lantern herself.\n\nNow the harbour has a light. Next, perhaps something bright and striped to go with it."
   },
   "history": [
     {
@@ -354,7 +355,8 @@
       },
       "status": "unfinished",
       "finishedAt": null,
-      "report": "The island got 87% of the way through Nova's Harbour Look before the day ended. It's kept in the log, unfinished."
+      "report": "The island got 87% of the way through Nova's Harbour Look before the day ended. It's kept in the log, unfinished.",
+      "aiReport": "Nova's Harbour Look didn't quite make it today: the island reached 87% before the light went, so it waits in the Island Log, unfinished but very nearly there.\n\nThe Sea-Glass Weave from yesterday was cut into a scarf, and a bright red beret took shape on the mannequin. Pip put in 2 careful turns at the mannequin, measuring twice and cutting once, and was heard telling the scissors to behave. Nova kept tilting the beret on her sketch, insisting red and sea-green belong together.\n\nThe Gull was moored with the red felt run still on her list, and spent the day chatting to the seagulls about tomorrow's breeze.\n\nSo close! A few more stitches and Nova will have the brightest hat on the harbour. Maybe next time it can be Pip's turn for an outfit."
     }
   ],
   "seq": 3

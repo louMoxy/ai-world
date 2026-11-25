@@ -2,7 +2,8 @@ import path from 'node:path'
 import { jsonFile } from './jsonFile.js'
 import { createBudget } from './budget.js'
 import { planDay } from './planner.js'
-import { EMPTY_STATE, CAST_IDS, dateKey, addDays, needsNewDay, startDay, addWork, isState } from '../src/making/days.js'
+import { aiInbox } from './inbox.js'
+import { EMPTY_STATE, CAST_IDS, dateKey, addDays, needsNewDay, startDay, createDay, addWork, isState } from '../src/making/days.js'
 
 const MAX_BODY = 2_000_000 // bytes
 
@@ -22,6 +23,7 @@ const MAX_BODY = 2_000_000 // bytes
 export function makingApi({ dataDir, env = {}, dev = false }) {
   const store = jsonFile(path.join(dataDir, 'making.json'), null)
   const budget = createBudget(path.join(dataDir, 'spend.json'), Number(env.DAILY_AI_BUDGET_USD ?? 0.5))
+  const inbox = aiInbox(dataDir)
   let state = null
   let rolling = null // a new day being planned (so two requests don't start two days)
 
@@ -37,15 +39,31 @@ export function makingApi({ dataDir, env = {}, dev = false }) {
       const saved = store.read()
       state = isState(saved) ? saved : null
     }
-    if (state && !needsNewDay(state)) return state
-    rolling ??= (async () => {
-      const base = state ?? EMPTY_STATE
-      const date = dateKey()
-      const plan = await planDay({ seq: base.seq, history: base.history, date }, { budget, env })
-      save(startDay(base, date, plan))
-    })().finally(() => (rolling = null))
-    await rolling
-    return state
+    if (!state || needsNewDay(state)) {
+      rolling ??= (async () => {
+        const base = state ?? EMPTY_STATE
+        const date = dateKey()
+        const plan = await planDay({ seq: base.seq, history: base.history, date }, { inbox })
+        save(startDay(base, date, plan))
+      })().finally(() => (rolling = null))
+      await rolling
+    }
+    return checkInbox()
+  }
+
+  /**
+   * Pick up what the daily AI has left in data/ai/. If today started with a sample plan
+   * because the AI's plan wasn't there yet, and nobody has started work, switch to the AI's.
+   */
+  function checkInbox() {
+    let next = state
+    const { day } = next
+    if (day?.status === 'active' && day.done === 0 && day.plannedBy === 'sample') {
+      const plan = inbox.planFor(day.date)
+      if (plan) next = { ...next, day: createDay(day.date, next.history, next.seq - 1, plan) }
+    }
+    next = inbox.addReports(next)
+    return next === state ? state : save(next)
   }
 
   const routes = {
@@ -72,7 +90,7 @@ export function makingApi({ dataDir, env = {}, dev = false }) {
       if (!dev) return [403, { error: 'Only available while developing' }]
       const base = await current()
       const date = base.day ? addDays(base.day.date, 1) : dateKey()
-      const plan = await planDay({ seq: base.seq, history: base.history, date }, { budget, env })
+      const plan = await planDay({ seq: base.seq, history: base.history, date }, { inbox })
       return [200, save(startDay(base, date, plan))]
     },
 
@@ -81,7 +99,8 @@ export function makingApi({ dataDir, env = {}, dev = false }) {
       {
         storage: path.relative(process.cwd(), store.file),
         ai: {
-          connected: false, // stage 3
+          plannedToday: state?.day?.plannedBy ?? null,
+          planWaiting: Boolean(inbox.planFor(dateKey())),
           keySet: Boolean(env.ANTHROPIC_API_KEY),
           dailyBudgetUsd: budget.dailyLimitUsd,
           spentTodayUsd: budget.spentOn(dateKey()),

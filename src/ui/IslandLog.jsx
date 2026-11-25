@@ -104,7 +104,13 @@ function LogEntry({ day, onOpen }) {
       <DesignSummary design={day.design} />
 
       <h4>{day.status === 'active' ? 'Progress' : 'Report'}</h4>
-      <p>
+      {day.aiReport && (
+        <p className="ai-report">
+          {day.aiReport}
+          <span className="muted small"> (written by {day.plannedBy && day.plannedBy !== 'sample' ? day.plannedBy : 'Claude'})</span>
+        </p>
+      )}
+      <p className={day.aiReport ? 'muted small' : undefined}>
         {day.report ??
           `${Math.round(progressOf(day) * 100)}% done. ${sketchProgress(day) < 1 ? 'The sketch is still being drawn.' : `${theme.making} is under way.`}`}
       </p>

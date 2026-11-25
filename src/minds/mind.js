@@ -12,10 +12,21 @@ import { useWorld } from '../store'
  *   sketchDone, finished, newDay                                            - everyone, on events
  *
  * Placeholders filled in from ctx: {place} {project} {maker} {theme} {cargo} {last} {n}
+ *
+ * The daily AI can also give each of them a few thoughts about that day's project
+ * (day.thoughts). Those are mixed in while they're working on it.
  */
 
 const people = new Map([...AGENTS, ...SHIPS].map((p) => [p.id, p]))
 const lastThought = new Map() // id -> text, so nobody thinks the same thing twice in a row
+
+const WORK_SITUATIONS = new Set(['walkToWork', 'sketch', 'make', 'help', 'sailOut', 'loading', 'delivering'])
+let dayThoughts = {} // id -> today's thoughts from the daily AI
+
+/** Today's thoughts from the daily AI, by id (or null for none). */
+export function setDayThoughts(thoughts) {
+  dayThoughts = thoughts ?? {}
+}
 
 const pick = (list) => list[Math.floor(Math.random() * list.length)]
 
@@ -34,7 +45,9 @@ export function thoughtFor(id, situation, ctx = {}, { always = false } = {}) {
   const person = people.get(id)
   const bank = person?.thoughts?.[situation]
   if (!bank) return null
-  const list = Array.isArray(bank) ? bank : (bank[ctx.stationId] ?? bank.default)
+  let list = Array.isArray(bank) ? bank : (bank[ctx.stationId] ?? bank.default)
+  const today = dayThoughts[id]
+  if (WORK_SITUATIONS.has(situation) && today?.length && Math.random() < 0.4) list = today
   if (!list?.length) return null
   if (!always && Math.random() > (person.behaviour?.thinky ?? 0.5)) return null
 

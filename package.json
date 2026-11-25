@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ai:brief": "node scripts/ai-day.js brief",
+    "ai:check": "node scripts/ai-day.js check"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
