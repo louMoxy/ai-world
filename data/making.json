@@ -204,7 +204,157 @@
     "status": "finished",
     "finishedAt": 1795539013301,
     "report": "Harbour Lantern is finished! Nova drew the plans, Pip did the printing The ships made 2 deliveries. It now stands in the Gallery.",
-    "aiReport": "The Harbour Lantern is finished and glowing in the Gallery! A sturdy base, warm glass on all four sides, a red roof like the boats and a little ring on top to hang it by.\n\nNova drew the plans in 14 turns, humming and deciding very quickly that the roof had to be pointy. Pip matched her with 14 turns at the printer, laying it down layer by layer and quietly pleased the nozzle never clogged once. That called for tea.\n\nThe Gull made 2 deliveries of red filament, both perfectly dry, and came home to the harbour proudly, as if she'd lit the lantern herself.\n\nNow the harbour has a light. Next, perhaps something bright and striped to go with it."
+    "aiReport": "The Harbour Lantern is finished and glowing in the Gallery! A sturdy base, warm glass on all four sides, a red roof like the boats and a little ring on top to hang it by.\n\nNova drew the plans in 14 turns, humming and deciding very quickly that the roof had to be pointy. Pip matched her with 14 turns at the printer, laying it down layer by layer and quietly pleased the nozzle never clogged once. That called for tea.\n\nThe Gull made 2 deliveries of red filament, both perfectly dry, and came home to the harbour proudly, as if she'd lit the lantern herself.\n\nNow the harbour has a light. Next, perhaps something bright and striped to go with it.",
+    "visits": [
+      {
+        "t": 1795616142992,
+        "who": "nova",
+        "place": "library",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616155718,
+        "who": "nova",
+        "place": "observatory",
+        "kind": "visit",
+        "note": "Don’t look now, but I’m having a genius moment."
+      },
+      {
+        "t": 1795616163458,
+        "who": "nova",
+        "place": "gallery",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616169672,
+        "who": "pip",
+        "place": "harbour",
+        "kind": "visit",
+        "note": "The Harbour needs a few tweaks."
+      },
+      {
+        "t": 1795616171552,
+        "who": "nova",
+        "place": "hub",
+        "kind": "visit",
+        "note": "The The Spire! Hello, The Spire."
+      },
+      {
+        "t": 1795616179032,
+        "who": "nova",
+        "place": "observatory",
+        "kind": "visit",
+        "note": "You can see the whole island from up here!"
+      },
+      {
+        "t": 1795616187269,
+        "who": "nova",
+        "place": "gallery",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616203258,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit",
+        "note": "Everything where I left it. Good."
+      },
+      {
+        "t": 1795616208058,
+        "who": "pip",
+        "place": "hub",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616220893,
+        "who": "nova",
+        "place": "garden",
+        "kind": "visit",
+        "note": "The Garden Gate! Hello, Garden Gate."
+      },
+      {
+        "t": 1795616247490,
+        "who": "pip",
+        "place": "hub",
+        "kind": "visit",
+        "note": "The The Spire needs a few tweaks."
+      },
+      {
+        "t": 1795616255559,
+        "who": "pip",
+        "place": "observatory",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616276594,
+        "who": "nova",
+        "place": "library",
+        "kind": "visit",
+        "note": "So many books. So few colourful covers."
+      },
+      {
+        "t": 1795616288261,
+        "who": "nova",
+        "place": "observatory",
+        "kind": "visit",
+        "note": "Ooh, what is the Observatory for?"
+      },
+      {
+        "t": 1795616290225,
+        "who": "pip",
+        "place": "harbour",
+        "kind": "visit",
+        "note": "Beep boop. Just kidding."
+      },
+      {
+        "t": 1795616299527,
+        "who": "nova",
+        "place": "library",
+        "kind": "visit",
+        "note": "I love the view from here."
+      },
+      {
+        "t": 1795616310879,
+        "who": "nova",
+        "place": "observatory",
+        "kind": "visit"
+      },
+      {
+        "t": 1795616319393,
+        "who": "nova",
+        "place": "hub",
+        "kind": "visit",
+        "note": "Did that crystal just flicker?"
+      },
+      {
+        "t": 1795616325561,
+        "who": "pip",
+        "place": "workshop",
+        "kind": "visit",
+        "note": "Everything where I left it. Good."
+      },
+      {
+        "t": 1795616328976,
+        "who": "nova",
+        "place": "library",
+        "kind": "visit",
+        "note": "So many books. So few colourful covers."
+      },
+      {
+        "t": 1795616335726,
+        "who": "pip",
+        "place": "garden",
+        "kind": "visit",
+        "note": "The Garden Gate. Hm."
+      },
+      {
+        "t": 1795616341526,
+        "who": "nova",
+        "place": "observatory",
+        "kind": "visit",
+        "note": "You can see the whole island from up here!"
+      }
+    ]
   },
   "history": [
     {

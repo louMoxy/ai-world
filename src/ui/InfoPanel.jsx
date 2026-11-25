@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { useWorld } from '../store'
 import { getStation } from '../stations/stations'
 import { AGENTS, getAgent } from '../agents/agents'
@@ -8,6 +9,8 @@ import { getWorkstation } from '../making/workstations'
 import { useMaking, jobNow, wornOutfit, allDays, progressOf } from '../making/store'
 import { IslandLog } from './IslandLog'
 import { voiceAvailable } from '../minds/Minds'
+import { placeHistory } from '../stations/history'
+import { nameOf } from '../making/days'
 
 /** Everyone you can follow, in order. */
 const CAST = [...AGENTS.map((a) => ({ type: 'agent', id: a.id })), ...SHIPS.map((s) => ({ type: 'ship', id: s.id }))]
@@ -37,26 +40,89 @@ export function InfoPanel() {
   )
 }
 
+const VISIT_WORDS = { break: 'on a break', visit: 'popped by' }
+const isCastId = (id) => CAST.some((c) => c.id === id)
+
+/** A place: what happened there and who came by. */
 function StationInfo({ id }) {
   const station = getStation(id)
+  const days = useMaking(useShallow(allDays))
+  const { made, visits, regulars } = useMemo(() => placeHistory(days, id), [days, id])
+  const followPerson = (who) => useWorld.getState().select({ type: CAST.find((c) => c.id === who).type, id: who })
+  const openDay = (dayId) => useWorld.getState().select({ type: 'log', id: dayId })
+  const Who = ({ who }) =>
+    isCastId(who) ? (
+      <button className="link" onClick={() => followPerson(who)} title={`Follow ${nameOf(who)}`}>
+        {nameOf(who)}
+      </button>
+    ) : (
+      nameOf(who)
+    )
+
   return (
-    <div className="panel-body">
+    <div className="panel-body place">
       <div className="panel-head">
         <span className="dot" style={{ background: station.color }} />
         <div>
           <h2>{station.name}</h2>
-          <p className="muted">Station</p>
+          <p className="muted">
+            {made.length} {made.length === 1 ? 'thing' : 'things'} happened here · {visits.length} {visits.length === 1 ? 'visit' : 'visits'}
+          </p>
         </div>
       </div>
       <p>{station.description}</p>
-      <div className="slot">
-        <div className="slot-row">
-          <span className="status off" /> <strong>AI model slot</strong>
-        </div>
-        <p className="muted">Not connected yet. This is where a model will run.</p>
-      </div>
+
+      {regulars.length > 0 && (
+        <>
+          <h4>Regulars</h4>
+          <div className="regulars">
+            {regulars.slice(0, 3).map(([who, n]) => (
+              <span key={who} className="regular">
+                <Who who={who} /> <span className="muted">×{n}</span>
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+
+      <h4>What happened here</h4>
+      {made.length ? (
+        <ul className="place-list">
+          {made.slice(0, 8).map((m, i) => (
+            <li key={i}>
+              <span className="muted small">{formatDay(m.date)} · </span>
+              <button className="link" onClick={() => openDay(m.dayId)}>
+                {m.title}
+              </button>
+              <br />
+              {m.text}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted">Nothing made here yet.</p>
+      )}
+
+      <h4>Who came by</h4>
+      {visits.length ? (
+        <ul className="place-list">
+          {visits.slice(0, 6).map((v) => (
+            <li key={`${v.t}-${v.who}`}>
+              <Who who={v.who} /> {VISIT_WORDS[v.kind] ?? 'came by'} <span className="muted small">· {ago(v.t)}</span>
+              {v.note && <span className="visit-note">“{v.note}”</span>}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="muted">No visitors yet. They'll come by on breaks and when they're off duty.</p>
+      )}
     </div>
   )
+}
+
+function formatDay(key) {
+  const [y, m, d] = key.split('-').map(Number)
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
 }
 
 /** Where a job happens, in words. */
@@ -147,7 +213,10 @@ function ago(at) {
   if (s < 20) return 'just now'
   if (s < 60) return `${s}s ago`
   const m = Math.round(s / 60)
-  return m < 60 ? `${m} min ago` : 'a while ago'
+  if (m < 60) return `${m} min ago`
+  const h = Math.round(m / 60)
+  if (h < 24) return `${h} h ago`
+  return new Date(at).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
 }
 
 /** Their recent thoughts and sayings, newest first, and the switch to hear them. */

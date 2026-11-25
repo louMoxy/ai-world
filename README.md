@@ -1,6 +1,6 @@
 # AI World
 
-A low-poly 3D island in the browser, built with React Three Fiber. Two characters, Nova and Pip, and a ship, the Gull, work together on a making challenge each day. Each station and each character is a slot where an AI model will plug in later.
+A low-poly 3D island in the browser, built with React Three Fiber. Two characters, Nova and Pip, and a ship, the Gull, work together on a making challenge each day, planned by Claude. What they make stays, and the island grows over time.
 
 ## Run it
 
@@ -11,7 +11,7 @@ npm run dev
 
 Then open http://localhost:5173. This also starts the island's small server (see "The server" below).
 
-**Controls:** drag to rotate, scroll to zoom, right-drag to pan. Click a character or ship (or their name on the challenge card or in the Island Log) to zoom in and follow them; the panel shows what they are doing. Click a station to read about it. Press Esc to stop following or close a panel. Press 1–6 (or use the list in the corner) to change the look.
+**Controls:** drag to rotate, scroll to zoom, right-drag to pan. Click a character or ship (or their name on the challenge card or in the Island Log) to zoom in and follow them; the panel shows what they are doing. Click a building to see its history: what was made there and who came by. The **i** button in the corner explains the project and the tech. Press Esc to stop following or close a panel. Press 1–6 (or the 🎨 button in the corner) to change the look.
 
 ## Project layout
 
@@ -27,6 +27,7 @@ src/
   stations/
     stations.js         Station list: edit names, colours and positions here
     Station.jsx         Station building, hover highlight and label
+    history.js          A place's history: what was made there and who came by
     dock.js             Harbour position and pier measurements
   agents/
     agents.js           Characters: names, colours, personalities, behaviour, voices and thoughts
@@ -61,7 +62,7 @@ src/
     fabric.js           Paints fabric patterns (sketches and 3D cloth)
     workstations.js     Where the easel, printer, mannequin, loom and gallery displays are
     MakingWorld.jsx     The easel, 3D printer, mannequin, loom and Gallery in the world
-  ui/                   Overlay, follow and station panel, look switcher, challenge card, Island Log, loading screen
+  ui/                   Overlay, follow and place panels, corner buttons (looks, About), challenge card, Island Log, loading screen
 server/
   makingApi.js          The island's server: saves the days, starts new ones, takes in work
   planner.js            Plans each new day: the daily AI's plan, or a sample

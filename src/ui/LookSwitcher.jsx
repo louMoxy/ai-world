@@ -2,11 +2,13 @@ import { useEffect } from 'react'
 import { useWorld } from '../store'
 import { LOOKS, getLook } from '../looks/looks'
 
-/** A small list in the corner for switching looks. Number keys 1–9 also switch. */
-export function LookSwitcher() {
+/**
+ * The list of looks, shown when the palette button in the corner is open (see CornerTools).
+ * Number keys 1–9 switch looks even while it's closed.
+ */
+export function LookSwitcher({ open, onPicked }) {
   const look = useWorld((s) => s.look)
   const setLook = useWorld((s) => s.setLook)
-  const panelOpen = useWorld((s) => s.selected?.type === 'station' || s.selected?.type === 'log')
 
   useEffect(() => {
     const onKey = (e) => {
@@ -24,8 +26,9 @@ export function LookSwitcher() {
     document.body.dataset.look = getLook(look).id
   }, [look])
 
+  if (!open) return null
   return (
-    <nav className={`looks ${panelOpen ? 'beside-panel' : ''}`} aria-label="Look">
+    <nav className="looks" id="look-list" aria-label="Look">
       <div className="looks-title">Look</div>
       {LOOKS.map((l, i) => (
         <button
@@ -33,7 +36,10 @@ export function LookSwitcher() {
           className={l.id === look ? 'on' : ''}
           aria-pressed={l.id === look}
           title={l.description}
-          onClick={() => setLook(l.id)}
+          onClick={() => {
+            setLook(l.id)
+            onPicked?.()
+          }}
         >
           <kbd>{i + 1}</kbd>
           {l.name}

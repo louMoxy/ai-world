@@ -19,7 +19,7 @@ import { Ship } from './ships/Ship'
 import { Overlay } from './ui/Overlay'
 import { InfoPanel } from './ui/InfoPanel'
 import { LoadingScreen } from './ui/LoadingScreen'
-import { LookSwitcher } from './ui/LookSwitcher'
+import { CornerTools } from './ui/CornerTools'
 import { MaterialSwap } from './looks/MaterialSwap'
 import { LookEffects } from './looks/LookEffects'
 import { MakingWorld } from './making/MakingWorld'
@@ -83,7 +83,7 @@ export default function App() {
       <ChallengeCard />
       <Minds />
       <InfoPanel />
-      <LookSwitcher />
+      <CornerTools />
       <LoadingScreen />
     </>
   )

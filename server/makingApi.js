@@ -3,7 +3,8 @@ import { jsonFile } from './jsonFile.js'
 import { createBudget } from './budget.js'
 import { planDay } from './planner.js'
 import { aiInbox } from './inbox.js'
-import { EMPTY_STATE, CAST_IDS, dateKey, addDays, needsNewDay, startDay, createDay, addWork, isState } from '../src/making/days.js'
+import { STATIONS } from '../src/stations/stations.js'
+import { EMPTY_STATE, CAST_IDS, VISIT_KINDS, dateKey, addDays, needsNewDay, startDay, createDay, addWork, addVisit, isState } from '../src/making/days.js'
 
 const MAX_BODY = 2_000_000 // bytes
 
@@ -14,6 +15,7 @@ const MAX_BODY = 2_000_000 // bytes
  *
  *   GET  /api/making           today's state (starts a new day first if the date changed)
  *   POST /api/making/work      { who, amount? }  someone finished a job
+ *   POST /api/making/visit     { who, place, kind, note? }  someone came by a place
  *   POST /api/making/import    { state }  one-time move of days saved in a browser
  *   POST /api/making/next-day  testing only: end today, start the next day
  *   GET  /api/status           where days are saved, and the AI connection and budget
@@ -75,6 +77,15 @@ export function makingApi({ dataDir, env = {}, dev = false }) {
       if (!CAST_IDS.includes(who) && !testing) return [400, { error: `Unknown worker "${who}"` }]
       if (!Number.isInteger(amount) || amount < 1 || amount > (testing ? 30 : 1)) return [400, { error: 'Bad amount' }]
       return [200, save(addWork(await current(), who, amount))]
+    },
+
+    'POST /api/making/visit': async (body) => {
+      const { who, place, kind, note } = body
+      if (!CAST_IDS.includes(who)) return [400, { error: `Unknown visitor "${who}"` }]
+      if (!STATIONS.some((s) => s.id === place)) return [400, { error: 'Unknown place' }]
+      if (!VISIT_KINDS.includes(kind)) return [400, { error: 'Unknown kind of visit' }]
+      if (note !== undefined && (typeof note !== 'string' || note.length > 120)) return [400, { error: 'Bad note' }]
+      return [200, save(addVisit(await current(), { who, place, kind, note }))]
     },
 
     'POST /api/making/import': async (body) => {

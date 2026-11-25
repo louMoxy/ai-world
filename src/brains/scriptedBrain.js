@@ -22,7 +22,7 @@
  * making challenge.
  */
 
-import { thoughtFor } from '../minds/mind'
+import { thoughtFor, tidyThe } from '../minds/mind'
 
 export const pick = (list) => list[Math.floor(Math.random() * list.length)]
 
@@ -35,7 +35,7 @@ export function createScriptedBrain(agent) {
       // After arriving somewhere, think about it, or say something, before moving on.
       if (lastAction?.type === 'walkTo') {
         if (Math.random() < (b.chatty ?? 0.5)) {
-          const text = pick(agent.lines).replace('{station}', here?.name ?? 'island')
+          const text = tidyThe(pick(agent.lines).replace('{station}', here?.name ?? 'island'))
           return { type: 'say', text, seconds: 3.5 }
         }
         return {

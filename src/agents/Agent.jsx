@@ -53,6 +53,12 @@ export function Agent({ agent }) {
   const startAction = (action) => {
     if (action?.thought) useWorld.getState().think(agent.id, action.thought)
     const s = sim.current
+    // Just arrived at a place (not a workstation)? Remember the visit, with what they thought or said there.
+    const arrived = s.lastAction?.type === 'walkTo' && getStation(s.lastAction.stationId) && !getWorkstation(s.lastAction.stationId)
+    if (arrived) {
+      const note = action?.thought ?? (action?.type === 'say' ? action.text : null)
+      useMaking.getState().visit(agent.id, s.lastAction.stationId, s.lastAction.onBreak ? 'break' : 'visit', note)
+    }
     const { setStatus } = useWorld.getState()
     const here = getStation(s.currentStationId)
     if (action?.type !== 'say') setStatus(agent.id, here ? `Hanging out at ${here.name}` : 'Looking around')

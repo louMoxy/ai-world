@@ -30,11 +30,16 @@ export function setDayThoughts(thoughts) {
 
 const pick = (list) => list[Math.floor(Math.random() * list.length)]
 
+/** "the The Spire" -> "the Spire" (some place names already start with "The"). */
+export const tidyThe = (text) => text.replace(/\b(the|The) The /g, '$1 ')
+
 function fill(text, ctx) {
-  return text.replace(/\{(\w+)\}/g, (match, key) => {
-    if (key === 'n') return String(12 + Math.floor(Math.random() * 60))
-    return ctx[key] ?? match
-  })
+  return tidyThe(
+    text.replace(/\{(\w+)\}/g, (match, key) => {
+      if (key === 'n') return String(12 + Math.floor(Math.random() * 60))
+      return ctx[key] ?? match
+    }),
+  )
 }
 
 /**

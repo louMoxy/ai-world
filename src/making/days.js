@@ -141,6 +141,21 @@ export function addWork(state, who, amount = 1, now = Date.now()) {
   return { ...state, day: next }
 }
 
+/** Kinds of visit to a place, and how many are kept per day. */
+export const VISIT_KINDS = ['break', 'visit']
+const MAX_VISITS = 40
+
+/**
+ * Someone arrived at a place (a break, or wandering when off duty). Kept in day.visits,
+ * newest last, so each place can show who came by and what was on their mind.
+ */
+export function addVisit(state, { who, place, kind, note }, now = Date.now()) {
+  const { day } = state
+  if (!day) return state
+  const visit = { t: now, who, place, kind, ...(note ? { note: String(note).slice(0, 120) } : {}) }
+  return { ...state, day: { ...day, visits: [...(day.visits ?? []), visit].slice(-MAX_VISITS) } }
+}
+
 /** Basic shape check for a saved state (from a file or the browser). */
 export const isState = (s) =>
   !!s && typeof s === 'object' && Array.isArray(s.history) && Number.isInteger(s.seq) && (s.day === null || typeof s.day === 'object')

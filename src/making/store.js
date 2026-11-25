@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { THEMES } from './designs'
 import { loadMaking, saveMaking, forgetMaking } from './storage'
-import { SKETCH_SHARE, EMPTY_STATE, nameOf, dateKey, addDays, samplePlan, needsNewDay, startDay, addWork, isState } from './days'
+import { SKETCH_SHARE, EMPTY_STATE, nameOf, dateKey, addDays, samplePlan, needsNewDay, startDay, addWork, addVisit, isState } from './days'
 
 export { NEEDED, SKETCH_SHARE, nameOf } from './days'
 
@@ -74,6 +74,21 @@ export const useMaking = create((set, get) => ({
       api('/api/making/work', { who, amount })
         .then((state) => set(pick(state)))
         .catch((e) => console.warn('[island] Could not save work:', e.message))
+    } else {
+      saveMaking(pick(get()))
+    }
+  },
+
+  /** Someone came by a place (see addVisit in days.js). */
+  visit(who, place, kind, note) {
+    const before = get()
+    const after = addVisit(before, { who, place, kind, note })
+    if (after === before) return
+    set({ day: after.day })
+    if (before.storage === 'server') {
+      api('/api/making/visit', { who, place, kind, ...(note ? { note } : {}) }).catch((e) =>
+        console.warn('[island] Could not save a visit:', e.message),
+      )
     } else {
       saveMaking(pick(get()))
     }

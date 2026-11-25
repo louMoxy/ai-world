@@ -18,10 +18,10 @@ function beside(stationId, turn, distance, standDistance) {
 }
 
 export const WORKSTATIONS = [
-  { id: 'easel', name: 'Easel', r: 0.7, ...beside('library', 0, 4.4, 5.8) },
-  { id: 'printer', name: '3D Printer', r: 1.6, ...beside('workshop', 0, 5, 7.4) },
-  { id: 'mannequin', name: 'Mannequin', r: 0.6, ...beside('workshop', 1.05, 4.4, 5.8) },
-  { id: 'loom', name: 'Loom', r: 1.2, ...beside('garden', 0, 4.6, 6.5) },
+  { id: 'easel', name: 'Easel', station: 'library', r: 0.7, ...beside('library', 0, 4.4, 5.8) },
+  { id: 'printer', name: '3D Printer', station: 'workshop', r: 1.6, ...beside('workshop', 0, 5, 7.4) },
+  { id: 'mannequin', name: 'Mannequin', station: 'workshop', r: 0.6, ...beside('workshop', 1.05, 4.4, 5.8) },
+  { id: 'loom', name: 'Loom', station: 'garden', r: 1.2, ...beside('garden', 0, 4.6, 6.5) },
 ]
 
 export const getWorkstation = (id) => WORKSTATIONS.find((w) => w.id === id)
