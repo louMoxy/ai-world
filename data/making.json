@@ -1,477 +1,90 @@
 {
   "day": {
-    "id": "2026-11-25-3",
-    "number": 3,
-    "date": "2026-11-25",
-    "title": "Harbour Lantern",
-    "brief": "Print a lantern to light the harbour at night: a sturdy base, glass all round, and a red roof with a ring to hang it by.",
+    "id": "2026-11-26-4",
+    "number": 4,
+    "date": "2026-11-26",
+    "title": "Lighthouse Stripes",
+    "brief": "Weave a bold striped cloth in lighthouse colours: cherry red, sea-foam white and a band of deep night blue, bright enough to spot from any boat.",
     "notes": [
-      "Glass on all four sides",
-      "Red roof, like the boats",
-      "Ring on top for hanging"
+      "Red and white, like a lighthouse",
+      "A thin night-blue band",
+      "Bold stripes: seen from the sea!"
     ],
     "design": {
-      "kind": "print",
-      "name": "Harbour Lantern",
-      "parts": [
-        {
-          "shape": "cylinder",
-          "at": [
-            0,
-            0.1,
-            0
-          ],
-          "color": "#3d405b",
-          "radius": 0.7,
-          "height": 0.2
-        },
-        {
-          "shape": "torus",
-          "at": [
-            0,
-            0.2,
-            0
-          ],
-          "color": "#e0a458",
-          "rot": [
-            90,
-            0,
-            0
-          ],
-          "radius": 0.62,
-          "tube": 0.06
-        },
-        {
-          "shape": "box",
-          "at": [
-            0,
-            0.75,
-            0
-          ],
-          "color": "#ffe8a3",
-          "size": [
-            0.9,
-            1,
-            0.9
-          ]
-        },
-        {
-          "shape": "box",
-          "at": [
-            0.45,
-            0.75,
-            0.45
-          ],
-          "color": "#3d405b",
-          "size": [
-            0.1,
-            1.05,
-            0.1
-          ]
-        },
-        {
-          "shape": "box",
-          "at": [
-            -0.45,
-            0.75,
-            0.45
-          ],
-          "color": "#3d405b",
-          "size": [
-            0.1,
-            1.05,
-            0.1
-          ]
-        },
-        {
-          "shape": "box",
-          "at": [
-            0.45,
-            0.75,
-            -0.45
-          ],
-          "color": "#3d405b",
-          "size": [
-            0.1,
-            1.05,
-            0.1
-          ]
-        },
-        {
-          "shape": "box",
-          "at": [
-            -0.45,
-            0.75,
-            -0.45
-          ],
-          "color": "#3d405b",
-          "size": [
-            0.1,
-            1.05,
-            0.1
-          ]
-        },
-        {
-          "shape": "box",
-          "at": [
-            0,
-            1.31,
-            0
-          ],
-          "color": "#3d405b",
-          "size": [
-            1.15,
-            0.12,
-            1.15
-          ]
-        },
-        {
-          "shape": "cone",
-          "at": [
-            0,
-            1.67,
-            0
-          ],
-          "color": "#e63946",
-          "radius": 0.8,
-          "height": 0.6
-        },
-        {
-          "shape": "sphere",
-          "at": [
-            0,
-            1.98,
-            0
-          ],
-          "color": "#e0a458",
-          "radius": 0.1
-        },
-        {
-          "shape": "torus",
-          "at": [
-            0,
-            2.3,
-            0
-          ],
-          "color": "#e0a458",
-          "radius": 0.25,
-          "tube": 0.05
-        }
-      ]
+      "kind": "fabric",
+      "name": "Lighthouse Stripes",
+      "pattern": "stripes",
+      "colors": [
+        "#e63946",
+        "#f1faee",
+        "#3d405b"
+      ],
+      "scale": 3
     },
     "tasks": [
       {
         "who": "nova",
         "job": "sketch",
         "at": "easel",
-        "activity": "Sketching the lantern",
+        "activity": "Sketching the stripes",
         "lines": [
-          "Should the roof be pointy? Yes.",
-          "A ring on top to hang it!"
+          "Red, white, red, white… blue!",
+          "Stripes make everything happy."
         ]
       },
       {
         "who": "pip",
         "job": "make",
-        "at": "printer",
-        "activity": "Printing the lantern",
-        "prep": "Warming up the printer",
+        "at": "loom",
+        "activity": "Weaving the striped cloth",
+        "prep": "Counting threads for each stripe",
         "lines": [
-          "Layer by layer…",
-          "Nozzle is nice and hot."
+          "Twelve red, twelve white. Good.",
+          "Steady shuttle, straight stripes."
         ]
       },
       {
         "who": "gull",
         "job": "fetch",
-        "at": "ne",
-        "activity": "Fetching red filament",
+        "at": "s",
+        "activity": "Fetching red and white yarn",
         "lines": [
-          "Cargo aboard!",
-          "Fair winds for deliveries."
+          "Yarn aboard, bone dry!",
+          "Following the lighthouse home."
         ]
       }
     ],
     "basedOn": null,
     "sketcher": "Nova",
-    "done": 30,
+    "plannedBy": "Claude",
+    "thoughts": {
+      "nova": [
+        "The lantern looked so cosy last night. Now I want stripes to match!",
+        "A thin blue stripe is like the sky just after sunset. Perfect.",
+        "Maybe Pip finally gets an outfit from this one…"
+      ],
+      "pip": [
+        "Stripes are all about counting. I like counting.",
+        "If the stripes drift, everyone will see it. They won't drift.",
+        "Tea first, then the loom."
+      ],
+      "gull": [
+        "Red and white yarn! Very nautical. The seagulls approve.",
+        "A good southerly breeze today. Perfect for cargo.",
+        "Must keep the white yarn out of the spray."
+      ]
+    },
+    "addition": null,
+    "done": 11,
     "needed": 30,
     "credits": {
-      "nova": 14,
-      "pip": 14,
-      "gull": 2
+      "nova": 8,
+      "gull": 2,
+      "pip": 1
     },
-    "status": "finished",
-    "finishedAt": 1795539013301,
-    "report": "Harbour Lantern is finished! Nova drew the plans, Pip did the printing The ships made 2 deliveries. It now stands in the Gallery.",
-    "aiReport": "The Harbour Lantern is finished and glowing in the Gallery! A sturdy base, warm glass on all four sides, a red roof like the boats and a little ring on top to hang it by.\n\nNova drew the plans in 14 turns, humming and deciding very quickly that the roof had to be pointy. Pip matched her with 14 turns at the printer, laying it down layer by layer and quietly pleased the nozzle never clogged once. That called for tea.\n\nThe Gull made 2 deliveries of red filament, both perfectly dry, and came home to the harbour proudly, as if she'd lit the lantern herself.\n\nNow the harbour has a light. Next, perhaps something bright and striped to go with it.",
-    "visits": [
-      {
-        "t": 1795616488535,
-        "who": "pip",
-        "place": "harbour",
-        "kind": "visit",
-        "note": "Ropes need re-coiling. Again."
-      },
-      {
-        "t": 1795616500353,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit",
-        "note": "Ah, the Spire. Still standing. Low bar, but well done."
-      },
-      {
-        "t": 1795616508021,
-        "who": "nova",
-        "place": "garden",
-        "kind": "visit",
-        "note": "The Garden Gate! Hello, Garden Gate."
-      },
-      {
-        "t": 1795616512853,
-        "who": "pip",
-        "place": "harbour",
-        "kind": "visit",
-        "note": "Ropes need re-coiling. Again."
-      },
-      {
-        "t": 1795616686883,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616703871,
-        "who": "nova",
-        "place": "observatory",
-        "kind": "visit",
-        "note": "The sky is doing gradients again. Show-off."
-      },
-      {
-        "t": 1795616721550,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit",
-        "note": "Hmm, where did I leave my wrench?"
-      },
-      {
-        "t": 1795616738902,
-        "who": "nova",
-        "place": "harbour",
-        "kind": "visit",
-        "note": "I have SO many ideas today."
-      },
-      {
-        "t": 1795616755103,
-        "who": "pip",
-        "place": "library",
-        "kind": "visit",
-        "note": "Hmm, where did I leave my wrench?"
-      },
-      {
-        "t": 1795616772285,
-        "who": "pip",
-        "place": "garden",
-        "kind": "visit",
-        "note": "The Garden Gate. Hm."
-      },
-      {
-        "t": 1795616773418,
-        "who": "nova",
-        "place": "gallery",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616783802,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616795169,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit",
-        "note": "The Spire. Hm."
-      },
-      {
-        "t": 1795616807723,
-        "who": "pip",
-        "place": "harbour",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616809422,
-        "who": "nova",
-        "place": "observatory",
-        "kind": "visit",
-        "note": "Ooh, what is the Observatory for?"
-      },
-      {
-        "t": 1795616820787,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616825339,
-        "who": "nova",
-        "place": "harbour",
-        "kind": "visit",
-        "note": "Waves are just the sea waving hello."
-      },
-      {
-        "t": 1795616832021,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616832720,
-        "who": "nova",
-        "place": "workshop",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616843188,
-        "who": "pip",
-        "place": "harbour",
-        "kind": "visit",
-        "note": "Ropes need re-coiling. Again."
-      },
-      {
-        "t": 1795616855777,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616867327,
-        "who": "nova",
-        "place": "garden",
-        "kind": "visit",
-        "note": "Is it just me, or does the Garden Gate need more glitter?"
-      },
-      {
-        "t": 1795616889496,
-        "who": "pip",
-        "place": "library",
-        "kind": "visit",
-        "note": "Ah, the Library. Still standing. Low bar, but well done."
-      },
-      {
-        "t": 1795616897897,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit",
-        "note": "The Spire. Hm."
-      },
-      {
-        "t": 1795616900928,
-        "who": "nova",
-        "place": "observatory",
-        "kind": "visit",
-        "note": "I love the view from here."
-      },
-      {
-        "t": 1795616909163,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit"
-      },
-      {
-        "t": 1795616916826,
-        "who": "pip",
-        "place": "hub",
-        "kind": "visit",
-        "note": "Ah, the Spire. Still standing. Low bar, but well done."
-      },
-      {
-        "t": 1795617271266,
-        "who": "nova",
-        "place": "garden",
-        "kind": "visit",
-        "note": "The Garden Gate! Hello, Garden Gate."
-      },
-      {
-        "t": 1795617287168,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit",
-        "note": "Everything where I left it. Good."
-      },
-      {
-        "t": 1795617304809,
-        "who": "nova",
-        "place": "workshop",
-        "kind": "visit",
-        "note": "The Workshop! Hello, Workshop."
-      },
-      {
-        "t": 1795617318204,
-        "who": "pip",
-        "place": "gallery",
-        "kind": "visit"
-      },
-      {
-        "t": 1795617332538,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit"
-      },
-      {
-        "t": 1795617337538,
-        "who": "nova",
-        "place": "observatory",
-        "kind": "visit"
-      },
-      {
-        "t": 1795617341072,
-        "who": "pip",
-        "place": "harbour",
-        "kind": "visit"
-      },
-      {
-        "t": 1795617359190,
-        "who": "pip",
-        "place": "garden",
-        "kind": "visit",
-        "note": "Hmm, where did I leave my wrench?"
-      },
-      {
-        "t": 1795617372457,
-        "who": "nova",
-        "place": "hub",
-        "kind": "visit"
-      },
-      {
-        "t": 1795617375990,
-        "who": "pip",
-        "place": "gallery",
-        "kind": "visit",
-        "note": "Is that roof a bit wonky? Nobody’s noticed. Good."
-      },
-      {
-        "t": 1795617392959,
-        "who": "pip",
-        "place": "workshop",
-        "kind": "visit"
-      },
-      {
-        "t": 1795617404956,
-        "who": "nova",
-        "place": "garden",
-        "kind": "visit",
-        "note": "Is it just me, or does the Garden Gate need more glitter?"
-      },
-      {
-        "t": 1795617408658,
-        "who": "nova",
-        "place": "hub",
-        "kind": "visit",
-        "note": "The Spire! Hello, The Spire."
-      }
-    ]
+    "status": "active",
+    "finishedAt": null,
+    "report": null
   },
   "history": [
     {
@@ -540,7 +153,8 @@
       },
       "status": "finished",
       "finishedAt": 1795538800569,
-      "report": "Sea-Glass Weave is finished! Nova drew the plans, Pip did the weaving The ships made 2 deliveries. The cloth hangs in the Gallery, ready for a future outfit."
+      "report": "Sea-Glass Weave is finished! Nova drew the plans, Pip did the weaving The ships made 2 deliveries. The cloth hangs in the Gallery, ready for a future outfit.",
+      "aiReport": "ISLAND GOSSIP: Sea-Glass Weave is finished, 30 out of 30, and the Gallery is now hanging the prettiest cloth this side of the shallows. Teal, pale blue and a whisper of foam-white, woven in a basket weave that Pip describes as \"structurally adequate\", which from Pip is basically a standing ovation.\n\nThe turn tally was a perfect tie: Nova 14, Pip 14. Nova spent hers at the easel declaring that the sea has \"at least forty greens, darling, and not one of them is beige.\" Pip spent theirs at the loom going clack, clack, clack, pausing only to say \"mind your fingers\" and to ask, for the ninth time, whether anyone had put the kettle on.\n\nThe Gull made 2 deliveries of sea-green dye and would like it entered into the island records that without those 2 deliveries there would be no cloth, no Gallery and possibly no sea. Seagull witnesses have been asked to confirm.\n\nWhat next? Nova is already eyeing the bolt and muttering the word \"scarf\". Pip has hidden the scissors. We give it a day."
     },
     {
       "id": "2026-11-25-2",
@@ -624,7 +238,481 @@
       "finishedAt": null,
       "report": "The island got 87% of the way through Nova's Harbour Look before the day ended. It's kept in the log, unfinished.",
       "aiReport": "Nova's Harbour Look didn't quite make it today: the island reached 87% before the light went, so it waits in the Island Log, unfinished but very nearly there.\n\nThe Sea-Glass Weave from yesterday was cut into a scarf, and a bright red beret took shape on the mannequin. Pip put in 2 careful turns at the mannequin, measuring twice and cutting once, and was heard telling the scissors to behave. Nova kept tilting the beret on her sketch, insisting red and sea-green belong together.\n\nThe Gull was moored with the red felt run still on her list, and spent the day chatting to the seagulls about tomorrow's breeze.\n\nSo close! A few more stitches and Nova will have the brightest hat on the harbour. Maybe next time it can be Pip's turn for an outfit."
+    },
+    {
+      "id": "2026-11-25-3",
+      "number": 3,
+      "date": "2026-11-25",
+      "title": "Harbour Lantern",
+      "brief": "Print a lantern to light the harbour at night: a sturdy base, glass all round, and a red roof with a ring to hang it by.",
+      "notes": [
+        "Glass on all four sides",
+        "Red roof, like the boats",
+        "Ring on top for hanging"
+      ],
+      "design": {
+        "kind": "print",
+        "name": "Harbour Lantern",
+        "parts": [
+          {
+            "shape": "cylinder",
+            "at": [
+              0,
+              0.1,
+              0
+            ],
+            "color": "#3d405b",
+            "radius": 0.7,
+            "height": 0.2
+          },
+          {
+            "shape": "torus",
+            "at": [
+              0,
+              0.2,
+              0
+            ],
+            "color": "#e0a458",
+            "rot": [
+              90,
+              0,
+              0
+            ],
+            "radius": 0.62,
+            "tube": 0.06
+          },
+          {
+            "shape": "box",
+            "at": [
+              0,
+              0.75,
+              0
+            ],
+            "color": "#ffe8a3",
+            "size": [
+              0.9,
+              1,
+              0.9
+            ]
+          },
+          {
+            "shape": "box",
+            "at": [
+              0.45,
+              0.75,
+              0.45
+            ],
+            "color": "#3d405b",
+            "size": [
+              0.1,
+              1.05,
+              0.1
+            ]
+          },
+          {
+            "shape": "box",
+            "at": [
+              -0.45,
+              0.75,
+              0.45
+            ],
+            "color": "#3d405b",
+            "size": [
+              0.1,
+              1.05,
+              0.1
+            ]
+          },
+          {
+            "shape": "box",
+            "at": [
+              0.45,
+              0.75,
+              -0.45
+            ],
+            "color": "#3d405b",
+            "size": [
+              0.1,
+              1.05,
+              0.1
+            ]
+          },
+          {
+            "shape": "box",
+            "at": [
+              -0.45,
+              0.75,
+              -0.45
+            ],
+            "color": "#3d405b",
+            "size": [
+              0.1,
+              1.05,
+              0.1
+            ]
+          },
+          {
+            "shape": "box",
+            "at": [
+              0,
+              1.31,
+              0
+            ],
+            "color": "#3d405b",
+            "size": [
+              1.15,
+              0.12,
+              1.15
+            ]
+          },
+          {
+            "shape": "cone",
+            "at": [
+              0,
+              1.67,
+              0
+            ],
+            "color": "#e63946",
+            "radius": 0.8,
+            "height": 0.6
+          },
+          {
+            "shape": "sphere",
+            "at": [
+              0,
+              1.98,
+              0
+            ],
+            "color": "#e0a458",
+            "radius": 0.1
+          },
+          {
+            "shape": "torus",
+            "at": [
+              0,
+              2.3,
+              0
+            ],
+            "color": "#e0a458",
+            "radius": 0.25,
+            "tube": 0.05
+          }
+        ]
+      },
+      "tasks": [
+        {
+          "who": "nova",
+          "job": "sketch",
+          "at": "easel",
+          "activity": "Sketching the lantern",
+          "lines": [
+            "Should the roof be pointy? Yes.",
+            "A ring on top to hang it!"
+          ]
+        },
+        {
+          "who": "pip",
+          "job": "make",
+          "at": "printer",
+          "activity": "Printing the lantern",
+          "prep": "Warming up the printer",
+          "lines": [
+            "Layer by layer…",
+            "Nozzle is nice and hot."
+          ]
+        },
+        {
+          "who": "gull",
+          "job": "fetch",
+          "at": "ne",
+          "activity": "Fetching red filament",
+          "lines": [
+            "Cargo aboard!",
+            "Fair winds for deliveries."
+          ]
+        }
+      ],
+      "basedOn": null,
+      "sketcher": "Nova",
+      "done": 30,
+      "needed": 30,
+      "credits": {
+        "nova": 14,
+        "pip": 14,
+        "gull": 2
+      },
+      "status": "finished",
+      "finishedAt": 1795539013301,
+      "report": "Harbour Lantern is finished! Nova drew the plans, Pip did the printing The ships made 2 deliveries. It now stands in the Gallery.",
+      "aiReport": "The Harbour Lantern is finished and glowing in the Gallery! A sturdy base, warm glass on all four sides, a red roof like the boats and a little ring on top to hang it by.\n\nNova drew the plans in 14 turns, humming and deciding very quickly that the roof had to be pointy. Pip matched her with 14 turns at the printer, laying it down layer by layer and quietly pleased the nozzle never clogged once. That called for tea.\n\nThe Gull made 2 deliveries of red filament, both perfectly dry, and came home to the harbour proudly, as if she'd lit the lantern herself.\n\nNow the harbour has a light. Next, perhaps something bright and striped to go with it.",
+      "visits": [
+        {
+          "t": 1795616488535,
+          "who": "pip",
+          "place": "harbour",
+          "kind": "visit",
+          "note": "Ropes need re-coiling. Again."
+        },
+        {
+          "t": 1795616500353,
+          "who": "pip",
+          "place": "hub",
+          "kind": "visit",
+          "note": "Ah, the Spire. Still standing. Low bar, but well done."
+        },
+        {
+          "t": 1795616508021,
+          "who": "nova",
+          "place": "garden",
+          "kind": "visit",
+          "note": "The Garden Gate! Hello, Garden Gate."
+        },
+        {
+          "t": 1795616512853,
+          "who": "pip",
+          "place": "harbour",
+          "kind": "visit",
+          "note": "Ropes need re-coiling. Again."
+        },
+        {
+          "t": 1795616686883,
+          "who": "pip",
+          "place": "workshop",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616703871,
+          "who": "nova",
+          "place": "observatory",
+          "kind": "visit",
+          "note": "The sky is doing gradients again. Show-off."
+        },
+        {
+          "t": 1795616721550,
+          "who": "pip",
+          "place": "hub",
+          "kind": "visit",
+          "note": "Hmm, where did I leave my wrench?"
+        },
+        {
+          "t": 1795616738902,
+          "who": "nova",
+          "place": "harbour",
+          "kind": "visit",
+          "note": "I have SO many ideas today."
+        },
+        {
+          "t": 1795616755103,
+          "who": "pip",
+          "place": "library",
+          "kind": "visit",
+          "note": "Hmm, where did I leave my wrench?"
+        },
+        {
+          "t": 1795616772285,
+          "who": "pip",
+          "place": "garden",
+          "kind": "visit",
+          "note": "The Garden Gate. Hm."
+        },
+        {
+          "t": 1795616773418,
+          "who": "nova",
+          "place": "gallery",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616783802,
+          "who": "pip",
+          "place": "workshop",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616795169,
+          "who": "pip",
+          "place": "hub",
+          "kind": "visit",
+          "note": "The Spire. Hm."
+        },
+        {
+          "t": 1795616807723,
+          "who": "pip",
+          "place": "harbour",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616809422,
+          "who": "nova",
+          "place": "observatory",
+          "kind": "visit",
+          "note": "Ooh, what is the Observatory for?"
+        },
+        {
+          "t": 1795616820787,
+          "who": "pip",
+          "place": "hub",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616825339,
+          "who": "nova",
+          "place": "harbour",
+          "kind": "visit",
+          "note": "Waves are just the sea waving hello."
+        },
+        {
+          "t": 1795616832021,
+          "who": "pip",
+          "place": "workshop",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616832720,
+          "who": "nova",
+          "place": "workshop",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616843188,
+          "who": "pip",
+          "place": "harbour",
+          "kind": "visit",
+          "note": "Ropes need re-coiling. Again."
+        },
+        {
+          "t": 1795616855777,
+          "who": "pip",
+          "place": "hub",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616867327,
+          "who": "nova",
+          "place": "garden",
+          "kind": "visit",
+          "note": "Is it just me, or does the Garden Gate need more glitter?"
+        },
+        {
+          "t": 1795616889496,
+          "who": "pip",
+          "place": "library",
+          "kind": "visit",
+          "note": "Ah, the Library. Still standing. Low bar, but well done."
+        },
+        {
+          "t": 1795616897897,
+          "who": "pip",
+          "place": "hub",
+          "kind": "visit",
+          "note": "The Spire. Hm."
+        },
+        {
+          "t": 1795616900928,
+          "who": "nova",
+          "place": "observatory",
+          "kind": "visit",
+          "note": "I love the view from here."
+        },
+        {
+          "t": 1795616909163,
+          "who": "pip",
+          "place": "workshop",
+          "kind": "visit"
+        },
+        {
+          "t": 1795616916826,
+          "who": "pip",
+          "place": "hub",
+          "kind": "visit",
+          "note": "Ah, the Spire. Still standing. Low bar, but well done."
+        },
+        {
+          "t": 1795617271266,
+          "who": "nova",
+          "place": "garden",
+          "kind": "visit",
+          "note": "The Garden Gate! Hello, Garden Gate."
+        },
+        {
+          "t": 1795617287168,
+          "who": "pip",
+          "place": "workshop",
+          "kind": "visit",
+          "note": "Everything where I left it. Good."
+        },
+        {
+          "t": 1795617304809,
+          "who": "nova",
+          "place": "workshop",
+          "kind": "visit",
+          "note": "The Workshop! Hello, Workshop."
+        },
+        {
+          "t": 1795617318204,
+          "who": "pip",
+          "place": "gallery",
+          "kind": "visit"
+        },
+        {
+          "t": 1795617332538,
+          "who": "pip",
+          "place": "workshop",
+          "kind": "visit"
+        },
+        {
+          "t": 1795617337538,
+          "who": "nova",
+          "place": "observatory",
+          "kind": "visit"
+        },
+        {
+          "t": 1795617341072,
+          "who": "pip",
+          "place": "harbour",
+          "kind": "visit"
+        },
+        {
+          "t": 1795617359190,
+          "who": "pip",
+          "place": "garden",
+          "kind": "visit",
+          "note": "Hmm, where did I leave my wrench?"
+        },
+        {
+          "t": 1795617372457,
+          "who": "nova",
+          "place": "hub",
+          "kind": "visit"
+        },
+        {
+          "t": 1795617375990,
+          "who": "pip",
+          "place": "gallery",
+          "kind": "visit",
+          "note": "Is that roof a bit wonky? Nobody’s noticed. Good."
+        },
+        {
+          "t": 1795617392959,
+          "who": "pip",
+          "place": "workshop",
+          "kind": "visit"
+        },
+        {
+          "t": 1795617404956,
+          "who": "nova",
+          "place": "garden",
+          "kind": "visit",
+          "note": "Is it just me, or does the Garden Gate need more glitter?"
+        },
+        {
+          "t": 1795617408658,
+          "who": "nova",
+          "place": "hub",
+          "kind": "visit",
+          "note": "The Spire! Hello, The Spire."
+        }
+      ]
     }
   ],
-  "seq": 3
+  "seq": 4
 }
