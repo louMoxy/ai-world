@@ -1,56 +1,140 @@
 {
   "day": {
-    "id": "2026-11-26-4",
-    "number": 4,
-    "date": "2026-11-26",
-    "title": "Lighthouse Stripes",
-    "brief": "Weave a bold striped cloth in lighthouse colours: cherry red, sea-foam white and a band of deep night blue, bright enough to spot from any boat.",
+    "id": "2026-11-27-5",
+    "number": 5,
+    "date": "2026-11-27",
+    "title": "Pip's Perfect Teapot",
+    "brief": "Print Pip a proper teapot: round belly, a spout that pours, a loop handle and a lid with a knob. Pip asked for beige. Nova said no. When it's done, a tea bench appears outside the workshop.",
     "notes": [
-      "Red and white, like a lighthouse",
-      "A thin night-blue band",
-      "Bold stripes: seen from the sea!"
+      "Round belly, NOT beige (signed, Nova)",
+      "Spout must actually pour - Pip",
+      "Gold band, because why not"
     ],
     "design": {
-      "kind": "fabric",
-      "name": "Lighthouse Stripes",
-      "pattern": "stripes",
-      "colors": [
-        "#e63946",
-        "#f1faee",
-        "#3d405b"
-      ],
-      "scale": 3
+      "kind": "print",
+      "name": "Pip's Perfect Teapot",
+      "parts": [
+        {
+          "shape": "cylinder",
+          "at": [
+            0,
+            0.05,
+            0
+          ],
+          "color": "#3d405b",
+          "radius": 0.5,
+          "height": 0.1
+        },
+        {
+          "shape": "sphere",
+          "at": [
+            0,
+            0.8,
+            0
+          ],
+          "color": "#2a9d8f",
+          "radius": 0.72
+        },
+        {
+          "shape": "torus",
+          "at": [
+            0,
+            0.8,
+            0
+          ],
+          "color": "#ffd166",
+          "rot": [
+            90,
+            0,
+            0
+          ],
+          "radius": 0.71,
+          "tube": 0.04
+        },
+        {
+          "shape": "cylinder",
+          "at": [
+            0.85,
+            0.9,
+            0
+          ],
+          "color": "#2a9d8f",
+          "rot": [
+            0,
+            0,
+            -50
+          ],
+          "radius": 0.12,
+          "height": 0.6,
+          "radiusTop": 0.07
+        },
+        {
+          "shape": "torus",
+          "at": [
+            -0.75,
+            0.85,
+            0
+          ],
+          "color": "#2a9d8f",
+          "radius": 0.33,
+          "tube": 0.07
+        },
+        {
+          "shape": "cylinder",
+          "at": [
+            0,
+            1.5,
+            0
+          ],
+          "color": "#e63946",
+          "radius": 0.4,
+          "height": 0.12
+        },
+        {
+          "shape": "sphere",
+          "at": [
+            0,
+            1.64,
+            0
+          ],
+          "color": "#ffd166",
+          "radius": 0.1
+        }
+      ]
     },
     "tasks": [
       {
         "who": "nova",
         "job": "sketch",
         "at": "easel",
-        "activity": "Sketching the stripes",
+        "activity": "Sketching a fabulous teapot",
         "lines": [
-          "Red, white, red, white… blue!",
-          "Stripes make everything happy."
+          "Teal! With a GOLD band! I'm crying.",
+          "Beige teapot? Over my dead easel.",
+          "The spout needs more drama."
         ]
       },
       {
         "who": "pip",
         "job": "make",
-        "at": "loom",
-        "activity": "Weaving the striped cloth",
-        "prep": "Counting threads for each stripe",
+        "at": "printer",
+        "activity": "Printing the teapot",
+        "prep": "Calibrating spout angle: 50 degrees",
         "lines": [
-          "Twelve red, twelve white. Good.",
-          "Steady shuttle, straight stripes."
+          "Finally. A useful print.",
+          "The spout will not drip. I've decided.",
+          "I'll drink tea from it. Not admire it."
         ]
       },
       {
         "who": "gull",
         "job": "fetch",
-        "at": "s",
-        "activity": "Fetching red and white yarn",
+        "at": "e",
+        "activity": "Fetching teal filament",
         "lines": [
-          "Yarn aboard, bone dry!",
-          "Following the lighthouse home."
+          "Teal filament, delivered by yours truly!",
+          "Write my name on the teapot, please.",
+          "Nobody ever thanks the boat."
         ]
       }
     ],
@@ -59,28 +143,31 @@
     "plannedBy": "Claude",
     "thoughts": {
       "nova": [
-        "The lantern looked so cosy last night. Now I want stripes to match!",
-        "A thin blue stripe is like the sky just after sunset. Perfect.",
-        "Maybe Pip finally gets an outfit from this one…"
+        "Pip asked for a 'nice sensible beige'. I had to lie down for ten minutes.",
+        "Teal belly, gold band, cherry lid. It's not a teapot, it's a lifestyle.",
+        "Still owe Pip those stripes. A teapot is basically a hug, though."
       ],
       "pip": [
-        "Stripes are all about counting. I like counting.",
-        "If the stripes drift, everyone will see it. They won't drift.",
-        "Tea first, then the loom."
+        "Teapot. Spout. Handle. Lid. Four parts doing one job. Beautiful.",
+        "Nova added a gold band. It does nothing. I've chosen peace.",
+        "The stripes can wait. Tea cannot."
       ],
       "gull": [
-        "Red and white yarn! Very nautical. The seagulls approve.",
-        "A good southerly breeze today. Perfect for cargo.",
-        "Must keep the white yarn out of the spray."
+        "Filament for a TEAPOT? I've carried treasure lighter than this. Probably.",
+        "Every cup Pip drinks is, technically, thanks to me.",
+        "A tea bench by the workshop! I'll moor nearby and accept compliments."
       ]
     },
-    "addition": null,
-    "done": 11,
+    "addition": {
+      "kind": "bench",
+      "near": "workshop",
+      "color": "#e0a458"
+    },
+    "done": 7,
     "needed": 30,
     "credits": {
-      "nova": 8,
-      "gull": 2,
-      "pip": 1
+      "nova": 6,
+      "gull": 1
     },
     "status": "active",
     "finishedAt": null,
@@ -712,7 +799,95 @@
           "note": "The Spire! Hello, The Spire."
         }
       ]
+    },
+    {
+      "id": "2026-11-26-4",
+      "number": 4,
+      "date": "2026-11-26",
+      "title": "Lighthouse Stripes",
+      "brief": "Weave a bold striped cloth in lighthouse colours: cherry red, sea-foam white and a band of deep night blue, bright enough to spot from any boat.",
+      "notes": [
+        "Red and white, like a lighthouse",
+        "A thin night-blue band",
+        "Bold stripes: seen from the sea!"
+      ],
+      "design": {
+        "kind": "fabric",
+        "name": "Lighthouse Stripes",
+        "pattern": "stripes",
+        "colors": [
+          "#e63946",
+          "#f1faee",
+          "#3d405b"
+        ],
+        "scale": 3
+      },
+      "tasks": [
+        {
+          "who": "nova",
+          "job": "sketch",
+          "at": "easel",
+          "activity": "Sketching the stripes",
+          "lines": [
+            "Red, white, red, white… blue!",
+            "Stripes make everything happy."
+          ]
+        },
+        {
+          "who": "pip",
+          "job": "make",
+          "at": "loom",
+          "activity": "Weaving the striped cloth",
+          "prep": "Counting threads for each stripe",
+          "lines": [
+            "Twelve red, twelve white. Good.",
+            "Steady shuttle, straight stripes."
+          ]
+        },
+        {
+          "who": "gull",
+          "job": "fetch",
+          "at": "s",
+          "activity": "Fetching red and white yarn",
+          "lines": [
+            "Yarn aboard, bone dry!",
+            "Following the lighthouse home."
+          ]
+        }
+      ],
+      "basedOn": null,
+      "sketcher": "Nova",
+      "plannedBy": "Claude",
+      "thoughts": {
+        "nova": [
+          "The lantern looked so cosy last night. Now I want stripes to match!",
+          "A thin blue stripe is like the sky just after sunset. Perfect.",
+          "Maybe Pip finally gets an outfit from this one…"
+        ],
+        "pip": [
+          "Stripes are all about counting. I like counting.",
+          "If the stripes drift, everyone will see it. They won't drift.",
+          "Tea first, then the loom."
+        ],
+        "gull": [
+          "Red and white yarn! Very nautical. The seagulls approve.",
+          "A good southerly breeze today. Perfect for cargo.",
+          "Must keep the white yarn out of the spray."
+        ]
+      },
+      "addition": null,
+      "done": 30,
+      "needed": 30,
+      "credits": {
+        "nova": 13,
+        "gull": 6,
+        "pip": 11
+      },
+      "status": "finished",
+      "finishedAt": 1795775313384,
+      "report": "Lighthouse Stripes is finished! Nova drew the plans, Pip did the weaving. The ships made 6 deliveries. The cloth hangs in the Gallery, ready for a future outfit.",
+      "aiReport": "Lighthouse Stripes didn't quite reach the shore: the cherry-red, sea-foam and night-blue cloth stopped at 11 of 30 turns (37%). Not a flop, darling, a cliffhanger.\n\nNova carried the day with 8 turns at the easel, declaring each stripe 'the happiest one yet' and hunting the loom for any thread that looked even slightly beige. Pip clocked a single turn, counted twelve red threads, said 'Good,' and went to make tea. Insiders say the tea was excellent. The stripes remain under-counted.\n\nThe Gull did its 2 deliveries and would like it known the white yarn arrived 'bone dry, thank you, by me, the boat.' It then followed the lighthouse home three times, purely for the applause.\n\nThe loom is still warm and the stripes are waiting. Meanwhile Pip, tea now firmly on the brain, is getting a teapot. Will Nova let it be beige? Sources say absolutely not."
     }
   ],
-  "seq": 4
+  "seq": 5
 }

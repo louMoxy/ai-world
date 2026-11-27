@@ -1,0 +1,50 @@
+{
+  "theme": "print",
+  "title": "Pip's Perfect Teapot",
+  "brief": "Print Pip a proper teapot: round belly, a spout that pours, a loop handle and a lid with a knob. Pip asked for beige. Nova said no. When it's done, a tea bench appears outside the workshop.",
+  "notes": [
+    "Round belly, NOT beige (signed, Nova)",
+    "Spout must actually pour - Pip",
+    "Gold band, because why not"
+  ],
+  "addition": { "kind": "bench", "near": "workshop", "color": "#e0a458" },
+  "design": {
+    "kind": "print",
+    "name": "Pip's Perfect Teapot",
+    "parts": [
+      { "shape": "cylinder", "radius": 0.5, "height": 0.1, "at": [0, 0.05, 0], "color": "#3d405b" },
+      { "shape": "sphere", "radius": 0.72, "at": [0, 0.8, 0], "color": "#2a9d8f" },
+      { "shape": "torus", "radius": 0.71, "tube": 0.04, "at": [0, 0.8, 0], "rot": [90, 0, 0], "color": "#ffd166" },
+      { "shape": "cylinder", "radius": 0.12, "radiusTop": 0.07, "height": 0.6, "at": [0.85, 0.9, 0], "rot": [0, 0, -50], "color": "#2a9d8f" },
+      { "shape": "torus", "radius": 0.33, "tube": 0.07, "at": [-0.75, 0.85, 0], "color": "#2a9d8f" },
+      { "shape": "cylinder", "radius": 0.4, "height": 0.12, "at": [0, 1.5, 0], "color": "#e63946" },
+      { "shape": "sphere", "radius": 0.1, "at": [0, 1.64, 0], "color": "#ffd166" }
+    ]
+  },
+  "tasks": [
+    { "who": "nova", "job": "sketch", "at": "easel", "activity": "Sketching a fabulous teapot",
+      "lines": ["Teal! With a GOLD band! I'm crying.", "Beige teapot? Over my dead easel.", "The spout needs more drama."] },
+    { "who": "pip", "job": "make", "at": "printer", "activity": "Printing the teapot", "prep": "Calibrating spout angle: 50 degrees",
+      "lines": ["Finally. A useful print.", "The spout will not drip. I've decided.", "I'll drink tea from it. Not admire it."] },
+    { "who": "gull", "job": "fetch", "at": "e", "activity": "Fetching teal filament",
+      "lines": ["Teal filament, delivered by yours truly!", "Write my name on the teapot, please.", "Nobody ever thanks the boat."] }
+  ],
+  "thoughts": {
+    "nova": [
+      "Pip asked for a 'nice sensible beige'. I had to lie down for ten minutes.",
+      "Teal belly, gold band, cherry lid. It's not a teapot, it's a lifestyle.",
+      "Still owe Pip those stripes. A teapot is basically a hug, though."
+    ],
+    "pip": [
+      "Teapot. Spout. Handle. Lid. Four parts doing one job. Beautiful.",
+      "Nova added a gold band. It does nothing. I've chosen peace.",
+      "The stripes can wait. Tea cannot."
+    ],
+    "gull": [
+      "Filament for a TEAPOT? I've carried treasure lighter than this. Probably.",
+      "Every cup Pip drinks is, technically, thanks to me.",
+      "A tea bench by the workshop! I'll moor nearby and accept compliments."
+    ]
+  },
+  "plannedBy": "Claude"
+}
